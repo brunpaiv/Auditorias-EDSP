@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditorias EDSP</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Auditorias EDSP</h1>
+            <p class="subtitle">Controle de Itens Nao Conformes</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- Filtros -->
+        <section class="filters">
+            <div class="filter-group">
+                <label for="filter-node">Estacao:</label>
+                <select id="filter-node">
+                    <option value="">Todas</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="filter-status">Status:</label>
+                <select id="filter-status">
+                    <option value="">Todos</option>
+                    <option value="Pendente">Pendente</option>
+                    <option value="Concluido">Concluido</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="filter-search">Buscar:</label>
+                <input type="text" id="filter-search" placeholder="Buscar por descricao...">
+            </div>
+            <div class="filter-actions">
+                <button id="btn-add" class="btn btn-primary">+ Nova Auditoria</button>
+                <button id="btn-export" class="btn btn-secondary">Exportar CSV</button>
+            </div>
+        </section>
+
+        <!-- Contadores -->
+        <section class="counters">
+            <div class="counter-card">
+                <span class="counter-value" id="total-count">0</span>
+                <span class="counter-label">Total</span>
+            </div>
+            <div class="counter-card counter-pending">
+                <span class="counter-value" id="pending-count">0</span>
+                <span class="counter-label">Pendentes</span>
+            </div>
+            <div class="counter-card counter-done">
+                <span class="counter-value" id="done-count">0</span>
+                <span class="counter-label">Concluidos</span>
+            </div>
+        </section>
+
+        <!-- Tabela -->
+        <section class="table-container">
+            <table id="audit-table">
+                <thead>
+                    <tr>
+                        <th>Node</th>
+                        <th>Programa</th>
+                        <th>Item</th>
+                        <th>Itens Nao Conformes</th>
+                        <th>Status</th>
+                        <th>Comentarios</th>
+                        <th>Acoes</th>
+                    </tr>
+                </thead>
+                <tbody id="audit-tbody">
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Modal de Adicionar/Editar -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Nova Auditoria</h2>
+                <button id="modal-close" class="btn-close">&times;</button>
+            </div>
+            <form id="audit-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="input-node">Node (Estacao)</label>
+                        <input type="text" id="input-node" required placeholder="Ex: SBU9">
+                    </div>
+                    <div class="form-group">
+                        <label for="input-programa">Programa</label>
+                        <input type="text" id="input-programa" value="EDSP" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-item">Item</label>
+                        <input type="number" id="input-item" required placeholder="Ex: 1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="input-descricao">Itens Nao Conformes</label>
+                    <textarea id="input-descricao" rows="3" required placeholder="Descreva a nao conformidade..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="input-status">Status</label>
+                        <select id="input-status" required>
+                            <option value="Pendente">Pendente</option>
+                            <option value="Concluido">Concluido</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="input-comentarios">Comentarios</label>
+                    <textarea id="input-comentarios" rows="2" placeholder="Acao tomada ou observacao..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="btn-cancel" class="btn btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>EDSP Auditorias &mdash; Atualizado em <span id="last-update"></span></p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
