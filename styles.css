@@ -19,6 +19,12 @@ header {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .header-content h1 {
     font-size: 1.8rem;
     font-weight: 700;
@@ -29,6 +35,33 @@ header {
     font-size: 0.95rem;
     opacity: 0.8;
     font-weight: 300;
+}
+
+/* Navigation */
+.nav-menu {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    opacity: 0.7;
+}
+
+.nav-link:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active {
+    opacity: 1;
+    background: rgba(255, 153, 0, 0.9);
 }
 
 /* Main */
@@ -371,6 +404,43 @@ footer {
     padding: 1.5rem;
     color: #888;
     font-size: 0.85rem;
+}
+
+/* Charts */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.chart-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #232f3e;
+    margin-bottom: 1rem;
+}
+
+.chart-container {
+    position: relative;
+    height: 280px;
+}
+
+.chart-container.chart-small {
+    height: 240px;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.counter-card.counter-rate {
+    border-left-color: #3498db;
 }
 
 /* Empty state */

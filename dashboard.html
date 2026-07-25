@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Auditorias EDSP</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-top">
+                <div>
+                    <h1>Auditorias EDSP</h1>
+                    <p class="subtitle">Dashboard de Indicadores</p>
+                </div>
+                <nav class="nav-menu">
+                    <a href="index.html" class="nav-link">Auditorias</a>
+                    <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Contadores -->
+        <section class="counters">
+            <div class="counter-card">
+                <span class="counter-value" id="total-count">0</span>
+                <span class="counter-label">Total de Itens</span>
+            </div>
+            <div class="counter-card counter-pending">
+                <span class="counter-value" id="pending-count">0</span>
+                <span class="counter-label">Pendentes</span>
+            </div>
+            <div class="counter-card counter-done">
+                <span class="counter-value" id="done-count">0</span>
+                <span class="counter-label">Concluidos</span>
+            </div>
+            <div class="counter-card counter-rate">
+                <span class="counter-value" id="rate-count">0%</span>
+                <span class="counter-label">Taxa de Conclusao</span>
+            </div>
+        </section>
+
+        <!-- Graficos -->
+        <section class="charts-grid">
+            <div class="chart-card">
+                <h3 class="chart-title">Status Geral</h3>
+                <div class="chart-container chart-small">
+                    <canvas id="chart-status"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3 class="chart-title">Itens por Estacao</h3>
+                <div class="chart-container">
+                    <canvas id="chart-nodes"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3 class="chart-title">Pendentes vs Concluidos por Estacao</h3>
+                <div class="chart-container">
+                    <canvas id="chart-status-node"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3 class="chart-title">Ranking de Nao Conformidades por Estacao</h3>
+                <div class="chart-container">
+                    <canvas id="chart-ranking"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabela resumo -->
+        <section class="table-container">
+            <h3 style="padding: 1rem 1rem 0; color: #232f3e;">Resumo por Estacao</h3>
+            <table id="summary-table">
+                <thead>
+                    <tr>
+                        <th>Estacao</th>
+                        <th>Total</th>
+                        <th>Pendentes</th>
+                        <th>Concluidos</th>
+                        <th>Taxa Conclusao</th>
+                    </tr>
+                </thead>
+                <tbody id="summary-tbody">
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p>EDSP Auditorias &mdash; Dashboard atualizado em <span id="last-update"></span></p>
+    </footer>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

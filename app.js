@@ -1,50 +1,112 @@
-// ===== DADOS INICIAIS =====
-const defaultData = [
-    { id: 1, node: "SBU9", programa: "EDSP", item: 1, descricao: "Alvara e AVCB Ausente", status: "Concluido", comentarios: "" },
-    { id: 2, node: "SBU9", programa: "EDSP", item: 2, descricao: "Somente uma Impressora ZEBRA", status: "Concluido", comentarios: "" },
-    { id: 3, node: "SBU9", programa: "EDSP", item: 3, descricao: "Somente um TC Na base", status: "Concluido", comentarios: "" },
-    { id: 4, node: "SBU9", programa: "EDSP", item: 4, descricao: "2 Paleteiras em ma condicao e ausencia de gaiolas", status: "Concluido", comentarios: "" },
-    { id: 5, node: "SBU9", programa: "EDSP", item: 5, descricao: "Kit de Primeiros socorros ausente na operacao", status: "Concluido", comentarios: "" },
-    { id: 6, node: "SBU9", programa: "EDSP", item: 6, descricao: "Falta de EPI's e cuidados na esteira (Cabelo solto, roupas inadequadas)", status: "Concluido", comentarios: "" },
-    { id: 7, node: "SBU9", programa: "EDSP", item: 7, descricao: "Gestao do dispatch, sem startup", status: "Concluido", comentarios: "" },
-    { id: 8, node: "SBU9", programa: "EDSP", item: 8, descricao: "Quadro Gestao A VISTA", status: "Concluido", comentarios: "" },
-    { id: 9, node: "SBU9", programa: "EDSP", item: 9, descricao: "Processo de tratativa de pacotes feita de forma erronea (PS Com fotos falsas e de pacotes nao presentes na base)", status: "Concluido", comentarios: "" },
-    { id: 10, node: "SBU9", programa: "EDSP", item: 10, descricao: "Base sem demarcacao de pedestres", status: "Concluido", comentarios: "" },
-    { id: 11, node: "SBU9", programa: "EDSP", item: 11, descricao: "Wash report nao e reportado", status: "Concluido", comentarios: "" },
-    { id: 12, node: "SBU9", programa: "EDSP", item: 12, descricao: "LOST Nao atingindo o target de 500 DPMO devido erros de processo", status: "Concluido", comentarios: "" },
-    { id: 13, node: "SBU9", programa: "EDSP", item: 13, descricao: "Pessoas externas com livre acesso a operacao e eventualmente aos pacotes", status: "Concluido", comentarios: "" },
-    { id: 14, node: "SBU9", programa: "EDSP", item: 14, descricao: "Lixeiras em baixo da esteiras, que acende um red flag a eventuais desvios.", status: "Concluido", comentarios: "" },
-    { id: 15, node: "SSJ9", programa: "EDSP", item: 1, descricao: "Esteira muito curta, nao tem espaco suficiente para processar os pacotes", status: "Concluido", comentarios: "Foi prolongado a esteira com mais 5 mts automatizado e 3 manual" },
-    { id: 16, node: "SSJ9", programa: "EDSP", item: 2, descricao: "Pouca quantidade de associados fazem a separacao (pick to buffer) gerando atraso", status: "Concluido", comentarios: "Mundanca de processo e adequacao da MO" },
-    { id: 17, node: "SSJ9", programa: "EDSP", item: 3, descricao: "Falta gaiola/prateleira para conseguir fazer a triagem adequada, sao de 30-40 rotas por dia", status: "Concluido", comentarios: "Recebido quantidade de gaiolas e adequado processo total 90 gaiolas" },
-    { id: 18, node: "SSJ9", programa: "EDSP", item: 4, descricao: "A falta de gaiolas/prateleiras e a esteira nao cobrir uma area maior, gera uma demora consideravel para terminar o processo", status: "Concluido", comentarios: "Idem itens anteriores" },
-    { id: 19, node: "SSC9", programa: "EDSP", item: 1, descricao: "Possui suporte na estacao e apresenta apenas duas lampadas queimadas, causando assim a nao conformidade na iluminacao", status: "Concluido", comentarios: "Foi substituido as lampadas queimadas e instalado refletores laterais" },
-    { id: 20, node: "SSC9", programa: "EDSP", item: 2, descricao: "Possui o alvara de funcionamento, entretanto o mesmo nao esta em local visivel, orientado a fixar o alvara em local visivel", status: "Concluido", comentarios: "Foi impresso e disponibilizado na base" },
-    { id: 21, node: "SSC9", programa: "EDSP", item: 3, descricao: "Base possui paineis eletricos, mas estao sem sinalizacao adequada, necessario fixar placas de risco de choque eletrico", status: "Concluido", comentarios: "Foi realizado a identificacao dos paineis" },
-    { id: 22, node: "STA9", programa: "EDSP", item: 1, descricao: "Extintores Vencidos", status: "Concluido", comentarios: "" },
-    { id: 23, node: "STA9", programa: "EDSP", item: 2, descricao: "Base Sem Documentacao", status: "Concluido", comentarios: "" },
-    { id: 24, node: "STA9", programa: "EDSP", item: 3, descricao: "Base Sem AVCB", status: "Concluido", comentarios: "" },
-    { id: 25, node: "STA9", programa: "EDSP", item: 4, descricao: "Fios Eletricos aparente", status: "Concluido", comentarios: "" },
-    { id: 26, node: "STA9", programa: "EDSP", item: 5, descricao: "Painel Eletrico Sem Tampa", status: "Concluido", comentarios: "" },
-    { id: 27, node: "PLO1", programa: "EDSP", item: 1, descricao: "Nao ha Kit de Primeiros Socorros", status: "Pendente", comentarios: "" },
-    { id: 28, node: "PLO1", programa: "EDSP", item: 2, descricao: "Cameras de seguranca gravam apenas 15 dias", status: "Pendente", comentarios: "" },
-];
+// ===== CONFIGURACAO =====
+// IMPORTANTE: Substitua a URL abaixo pela URL do seu Google Apps Script
+// (Veja as instrucoes no arquivo google-apps-script.js)
+const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbw46is0HgQt4DZBVg2Az6v66NlYJ9uzbnDsBDixXDZgqiKydAI--zyjrWdlHOKqcxc/exec';
+
+// ===== DADOS INICIAIS (vazio - dados vem do Google Sheets) =====
+const defaultData = [];
 
 // ===== APP STATE =====
 let auditorias = [];
 let editingId = null;
 let nextId = 100;
+let useSheets = false;
 
 // ===== INICIALIZACAO =====
 document.addEventListener('DOMContentLoaded', () => {
-    loadData();
+    init();
+});
+
+async function init() {
+    useSheets = SHEETS_API_URL !== 'COLE_SUA_URL_AQUI' && SHEETS_API_URL.startsWith('https://');
+    
+    if (useSheets) {
+        showLoading(true);
+        await loadFromSheets();
+        showLoading(false);
+    } else {
+        loadFromLocal();
+    }
+    
     setupEventListeners();
     render();
     updateLastUpdate();
-});
+}
 
-// ===== PERSISTENCIA (localStorage) =====
-function loadData() {
+// ===== LOADING INDICATOR =====
+function showLoading(show) {
+    const tbody = document.getElementById('audit-tbody');
+    if (show) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align:center; padding:2rem; color:#888;">
+                    Carregando dados do Google Sheets...
+                </td>
+            </tr>
+        `;
+    }
+}
+
+// ===== PERSISTENCIA - GOOGLE SHEETS =====
+async function loadFromSheets() {
+    try {
+        const response = await fetch(SHEETS_API_URL);
+        const data = await response.json();
+        auditorias = data.map(row => ({
+            id: Number(row.id),
+            node: String(row.node || ''),
+            programa: String(row.programa || ''),
+            item: Number(row.item),
+            descricao: String(row.descricao || ''),
+            status: String(row.status || ''),
+            comentarios: String(row.comentarios || '')
+        }));
+        nextId = Math.max(...auditorias.map(a => a.id), 99) + 1;
+    } catch (error) {
+        console.error('Erro ao carregar dados do Sheets:', error);
+        alert('Erro ao conectar com Google Sheets. Usando dados locais.');
+        loadFromLocal();
+    }
+}
+
+async function addToSheets(item) {
+    try {
+        await fetch(SHEETS_API_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'add', data: item }),
+            headers: { 'Content-Type': 'text/plain' }
+        });
+    } catch (error) {
+        console.error('Erro ao adicionar no Sheets:', error);
+    }
+}
+
+async function updateInSheets(item) {
+    try {
+        await fetch(SHEETS_API_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'update', data: item }),
+            headers: { 'Content-Type': 'text/plain' }
+        });
+    } catch (error) {
+        console.error('Erro ao atualizar no Sheets:', error);
+    }
+}
+
+async function deleteFromSheets(id) {
+    try {
+        await fetch(SHEETS_API_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'delete', data: { id: id } }),
+            headers: { 'Content-Type': 'text/plain' }
+        });
+    } catch (error) {
+        console.error('Erro ao excluir no Sheets:', error);
+    }
+}
+
+// ===== PERSISTENCIA - LOCAL (fallback) =====
+function loadFromLocal() {
     const saved = localStorage.getItem('auditorias-edsp');
     if (saved) {
         auditorias = JSON.parse(saved);
@@ -52,13 +114,12 @@ function loadData() {
     } else {
         auditorias = [...defaultData];
         nextId = Math.max(...auditorias.map(a => a.id), 99) + 1;
-        saveData();
+        saveLocal();
     }
 }
 
-function saveData() {
+function saveLocal() {
     localStorage.setItem('auditorias-edsp', JSON.stringify(auditorias));
-    updateLastUpdate();
 }
 
 function updateLastUpdate() {
@@ -69,28 +130,19 @@ function updateLastUpdate() {
 
 // ===== EVENT LISTENERS =====
 function setupEventListeners() {
-    // Filtros
     document.getElementById('filter-node').addEventListener('change', render);
     document.getElementById('filter-status').addEventListener('change', render);
     document.getElementById('filter-search').addEventListener('input', render);
-
-    // Botoes
     document.getElementById('btn-add').addEventListener('click', openAddModal);
     document.getElementById('btn-export').addEventListener('click', exportCSV);
-
-    // Modal
     document.getElementById('modal-close').addEventListener('click', closeModal);
     document.getElementById('btn-cancel').addEventListener('click', closeModal);
     document.getElementById('audit-form').addEventListener('submit', handleFormSubmit);
 
-    // Fechar modal ao clicar fora
     document.getElementById('modal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('modal')) {
-            closeModal();
-        }
+        if (e.target === document.getElementById('modal')) closeModal();
     });
 
-    // Fechar modal com ESC
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeModal();
     });
@@ -167,7 +219,6 @@ function renderNodeFilter() {
     const currentValue = select.value;
     const nodes = [...new Set(auditorias.map(a => a.node))].sort();
 
-    // Preserva opcoes sem recriar se nao mudou
     const existingOptions = Array.from(select.options).map(o => o.value).filter(v => v);
     if (JSON.stringify(nodes) === JSON.stringify(existingOptions)) return;
 
@@ -204,7 +255,7 @@ function closeModal() {
 }
 
 // ===== CRUD =====
-function handleFormSubmit(e) {
+async function handleFormSubmit(e) {
     e.preventDefault();
 
     const formData = {
@@ -217,22 +268,21 @@ function handleFormSubmit(e) {
     };
 
     if (editingId !== null) {
-        // Editar existente
         const index = auditorias.findIndex(a => a.id === editingId);
         if (index !== -1) {
             auditorias[index] = { ...auditorias[index], ...formData };
+            if (useSheets) await updateInSheets(auditorias[index]);
         }
     } else {
-        // Adicionar novo
-        auditorias.push({
-            id: nextId++,
-            ...formData
-        });
+        const newItem = { id: nextId++, ...formData };
+        auditorias.push(newItem);
+        if (useSheets) await addToSheets(newItem);
     }
 
-    saveData();
+    if (!useSheets) saveLocal();
     closeModal();
     render();
+    updateLastUpdate();
 }
 
 function editItem(id) {
@@ -240,14 +290,16 @@ function editItem(id) {
     if (item) openEditModal(item);
 }
 
-function deleteItem(id) {
+async function deleteItem(id) {
     const item = auditorias.find(a => a.id === id);
     if (!item) return;
 
     if (confirm(`Excluir auditoria "${item.descricao}"?`)) {
         auditorias = auditorias.filter(a => a.id !== id);
-        saveData();
+        if (useSheets) await deleteFromSheets(id);
+        if (!useSheets) saveLocal();
         render();
+        updateLastUpdate();
     }
 }
 
@@ -283,13 +335,12 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-// ===== RESET DATA (funcao utilitaria) =====
 function resetData() {
     if (confirm('Isso ira restaurar todos os dados para o estado original. Continuar?')) {
         localStorage.removeItem('auditorias-edsp');
         auditorias = [...defaultData];
         nextId = Math.max(...auditorias.map(a => a.id), 99) + 1;
-        saveData();
+        saveLocal();
         render();
     }
 }
