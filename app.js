@@ -192,7 +192,7 @@ function renderTable(data) {
             <td>${escapeHtml(item.programa)}</td>
             <td>${item.item}</td>
             <td>${escapeHtml(item.descricao)}</td>
-            <td><span class="status-badge status-${item.status.toLowerCase()}">${item.status === 'Concluido' ? 'Concluído' : item.status}</span></td>
+            <td><span class="status-badge status-${item.status.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()}">${item.status}</span></td>
             <td>${escapeHtml(item.comentarios || '-')}</td>
             <td>
                 <div class="action-buttons">
@@ -207,7 +207,7 @@ function renderTable(data) {
 function renderCounters(filtered) {
     const total = filtered.length;
     const pending = filtered.filter(i => i.status === 'Pendente').length;
-    const done = filtered.filter(i => i.status === 'Concluido' || i.status === 'Concluído').length;
+    const done = filtered.filter(i => i.status === 'Concluído' || i.status === 'Concluido').length;
 
     document.getElementById('total-count').textContent = total;
     document.getElementById('pending-count').textContent = pending;

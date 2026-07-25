@@ -73,7 +73,7 @@ function updateLastUpdate() {
 function renderCounters() {
     const total = auditorias.length;
     const pending = auditorias.filter(a => a.status === 'Pendente').length;
-    const done = auditorias.filter(a => a.status === 'Concluido' || a.status === 'Concluído').length;
+    const done = auditorias.filter(a => a.status === 'Concluído' || a.status === 'Concluido').length;
     const rate = total > 0 ? Math.round((done / total) * 100) : 0;
 
     document.getElementById('total-count').textContent = total;
@@ -93,7 +93,7 @@ function renderCharts() {
 // Grafico 1: Pizza - Status Geral
 function renderStatusChart() {
     const pending = auditorias.filter(a => a.status === 'Pendente').length;
-    const done = auditorias.filter(a => a.status === 'Concluido' || a.status === 'Concluído').length;
+    const done = auditorias.filter(a => a.status === 'Concluído' || a.status === 'Concluido').length;
 
     const ctx = document.getElementById('chart-status').getContext('2d');
     new Chart(ctx, {
@@ -265,7 +265,7 @@ function getNodeSummary() {
         }
         summary[a.node].total++;
         if (a.status === 'Pendente') summary[a.node].pending++;
-        if (a.status === 'Concluido' || a.status === 'Concluído') summary[a.node].done++;
+        if (a.status === 'Concluído' || a.status === 'Concluido') summary[a.node].done++;
     });
     return summary;
 }
