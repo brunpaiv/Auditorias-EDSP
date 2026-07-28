@@ -272,6 +272,7 @@ function renderSummaryTable() {
             if (rate === 100) barColor = '#27ae60';
             else if (rate >= 50) barColor = '#f39c12';
             else barColor = '#e74c3c';
+            const textColor = rate === 0 ? 'color:#e74c3c; font-weight:800;' : '';
             return `
                 <tr>
                     <td><strong>${node}</strong></td>
@@ -281,7 +282,7 @@ function renderSummaryTable() {
                     <td>
                         <div class="progress-bar-container">
                             <div class="progress-bar-fill" style="width:${rate}%; background:${barColor};"></div>
-                            <span class="progress-bar-text">${rate}%</span>
+                            <span class="progress-bar-text" style="${textColor}">${rate}%</span>
                         </div>
                     </td>
                 </tr>
