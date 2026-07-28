@@ -13,10 +13,11 @@ body {
 
 /* Header */
 header {
-    background: linear-gradient(135deg, #232f3e 0%, #37475a 100%);
-    color: white;
+    background: #ffffff;
+    color: #232f3e;
     padding: 1.5rem 2rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-bottom: 3px solid #ff9900;
 }
 
 .header-top {
@@ -28,13 +29,27 @@ header {
 .header-content h1 {
     font-size: 1.8rem;
     font-weight: 700;
+    color: #232f3e;
     margin-bottom: 0.25rem;
 }
 
 .header-content .subtitle {
     font-size: 0.95rem;
-    opacity: 0.8;
-    font-weight: 300;
+    color: #555;
+    font-weight: 400;
+}
+
+.header-content .slogan {
+    font-size: 0.8rem;
+    color: #ff9900;
+    font-style: italic;
+    margin-top: 0.2rem;
+}
+
+.header-content .author {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 0.15rem;
 }
 
 /* Navigation */
@@ -44,24 +59,25 @@ header {
 }
 
 .nav-link {
-    color: white;
+    color: #232f3e;
     text-decoration: none;
     padding: 0.5rem 1rem;
     border-radius: 6px;
     font-size: 0.9rem;
     font-weight: 500;
     transition: all 0.2s;
-    opacity: 0.7;
+    opacity: 0.6;
 }
 
 .nav-link:hover {
     opacity: 1;
-    background: rgba(255, 255, 255, 0.1);
+    background: #f0f2f5;
 }
 
 .nav-link.active {
     opacity: 1;
-    background: rgba(255, 153, 0, 0.9);
+    background: #ff9900;
+    color: white;
 }
 
 /* Main */
@@ -453,6 +469,78 @@ footer {
 .empty-state p {
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
+}
+
+/* Evidence upload */
+.evidence-group {
+    margin-bottom: 1rem;
+}
+
+.evidence-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 0.3rem;
+}
+
+.evidence-upload {
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.evidence-upload:hover {
+    border-color: #ff9900;
+    background: #fff8ed;
+}
+
+.evidence-upload input[type="file"] {
+    display: none;
+}
+
+.evidence-upload .upload-text {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.evidence-upload .upload-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.evidence-list {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.evidence-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: #f0f2f5;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #555;
+}
+
+.evidence-item img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.evidence-item .remove-evidence {
+    cursor: pointer;
+    color: #e74c3c;
+    font-weight: bold;
 }
 
 /* Responsive */

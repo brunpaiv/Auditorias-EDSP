@@ -48,6 +48,9 @@ async function init() {
         loadFromLocal();
     }
 
+    // Registrar plugin de datalabels
+    Chart.register(ChartDataLabels);
+
     renderCounters();
     renderCharts();
     renderSummaryTable();
@@ -114,6 +117,11 @@ function renderStatusChart() {
                 legend: {
                     position: 'bottom',
                     labels: { font: { size: 13 }, padding: 20 }
+                },
+                datalabels: {
+                    color: '#fff',
+                    font: { size: 16, weight: 'bold' },
+                    formatter: (value) => value > 0 ? value : ''
                 }
             }
         }
@@ -143,7 +151,14 @@ function renderNodesChart() {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { display: false }
+                legend: { display: false },
+                datalabels: {
+                    anchor: 'end',
+                    align: 'top',
+                    color: '#232f3e',
+                    font: { size: 14, weight: 'bold' },
+                    formatter: (value) => value > 0 ? value : ''
+                }
             },
             scales: {
                 y: {
@@ -189,6 +204,11 @@ function renderStatusByNodeChart() {
                 legend: {
                     position: 'bottom',
                     labels: { font: { size: 12 } }
+                },
+                datalabels: {
+                    color: '#fff',
+                    font: { size: 12, weight: 'bold' },
+                    formatter: (value) => value > 0 ? value : ''
                 }
             },
             scales: {
@@ -223,7 +243,14 @@ function renderRankingChart() {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { display: false }
+                legend: { display: false },
+                datalabels: {
+                    anchor: 'end',
+                    align: 'right',
+                    color: '#232f3e',
+                    font: { size: 14, weight: 'bold' },
+                    formatter: (value) => value > 0 ? value : ''
+                }
             },
             scales: {
                 x: { beginAtZero: true, ticks: { stepSize: 1 } }

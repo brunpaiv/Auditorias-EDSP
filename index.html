@@ -13,6 +13,8 @@
                 <div>
                     <h1>Auditorias EDSP</h1>
                     <p class="subtitle">Regional-SP</p>
+                    <p class="slogan">Work hard. Have fun. Make history.</p>
+                    <p class="author">@brunpaiv</p>
                 </div>
                 <nav class="nav-menu">
                     <a href="index.html" class="nav-link active">Auditorias</a>
@@ -123,6 +125,15 @@
                 <div class="form-group">
                     <label for="input-comentarios">Comentarios</label>
                     <textarea id="input-comentarios" rows="2" placeholder="Acao tomada ou observacao..."></textarea>
+                </div>
+                <div class="evidence-group">
+                    <label>Evidências</label>
+                    <div class="evidence-upload" id="evidence-drop" onclick="document.getElementById('input-evidence').click()">
+                        <div class="upload-icon">📷</div>
+                        <div class="upload-text">Clique ou arraste fotos aqui</div>
+                        <input type="file" id="input-evidence" multiple accept="image/*">
+                    </div>
+                    <div class="evidence-list" id="evidence-list"></div>
                 </div>
                 <div class="form-actions">
                     <button type="button" id="btn-cancel" class="btn btn-secondary">Cancelar</button>

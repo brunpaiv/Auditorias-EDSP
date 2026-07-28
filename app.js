@@ -29,6 +29,7 @@ async function init() {
     }
     
     setupEventListeners();
+    setupEvidenceListeners();
     render();
     updateLastUpdate();
 }
@@ -229,15 +230,18 @@ function renderNodeFilter() {
 // ===== MODAL =====
 function openAddModal() {
     editingId = null;
+    evidenceFiles = [];
     document.getElementById('modal-title').textContent = 'Nova Auditoria';
     document.getElementById('audit-form').reset();
     document.getElementById('input-programa').value = 'EDSP';
+    renderEvidenceList();
     document.getElementById('modal').classList.remove('hidden');
     document.getElementById('input-node').focus();
 }
 
 function openEditModal(item) {
     editingId = item.id;
+    evidenceFiles = [];
     document.getElementById('modal-title').textContent = 'Editar Auditoria';
     document.getElementById('input-node').value = item.node;
     document.getElementById('input-programa').value = item.programa;
@@ -245,6 +249,7 @@ function openEditModal(item) {
     document.getElementById('input-descricao').value = item.descricao;
     document.getElementById('input-status').value = item.status;
     document.getElementById('input-comentarios').value = item.comentarios || '';
+    renderEvidenceList();
     document.getElementById('modal').classList.remove('hidden');
     document.getElementById('input-node').focus();
 }
@@ -333,6 +338,70 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// ===== EVIDENCIAS =====
+let evidenceFiles = [];
+
+function setupEvidenceListeners() {
+    const input = document.getElementById('input-evidence');
+    const dropZone = document.getElementById('evidence-drop');
+
+    if (!input || !dropZone) return;
+
+    input.addEventListener('change', (e) => {
+        handleEvidenceFiles(e.target.files);
+    });
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#ff9900';
+        dropZone.style.background = '#fff8ed';
+    });
+
+    dropZone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#ddd';
+        dropZone.style.background = '';
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#ddd';
+        dropZone.style.background = '';
+        handleEvidenceFiles(e.dataTransfer.files);
+    });
+}
+
+function handleEvidenceFiles(files) {
+    Array.from(files).forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            evidenceFiles.push({ name: file.name, data: e.target.result });
+            renderEvidenceList();
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function renderEvidenceList() {
+    const list = document.getElementById('evidence-list');
+    if (!list) return;
+
+    list.innerHTML = evidenceFiles.map((file, index) => `
+        <div class="evidence-item">
+            <img src="${file.data}" alt="${file.name}">
+            <span>${file.name.substring(0, 15)}...</span>
+            <span class="remove-evidence" onclick="removeEvidence(${index})">x</span>
+        </div>
+    `).join('');
+}
+
+function removeEvidence(index) {
+    evidenceFiles.splice(index, 1);
+    renderEvidenceList();
 }
 
 function resetData() {
