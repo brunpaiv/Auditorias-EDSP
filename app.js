@@ -60,6 +60,7 @@ async function loadFromSheets() {
             item: Number(row.item),
             descricao: String(row.descricao || ''),
             status: String(row.status || ''),
+            responsavel: String(row.responsavel || ''),
             comentarios: String(row.comentarios || '')
         }));
         nextId = Math.max(...auditorias.map(a => a.id), 99) + 1;
@@ -176,7 +177,7 @@ function renderTable(data) {
     if (data.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="8">
+                <td colspan="9">
                     <div class="empty-state">
                         <p>Nenhuma auditoria encontrada</p>
                         <span>Ajuste os filtros ou adicione uma nova auditoria</span>
@@ -200,6 +201,7 @@ function renderTable(data) {
             <td>${item.item}</td>
             <td>${escapeHtml(item.descricao)}</td>
             <td><span class="status-badge status-${item.status.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()}">${item.status}</span></td>
+            <td>${escapeHtml(item.responsavel || '-')}</td>
             <td>${escapeHtml(item.comentarios || '-')}</td>
             <td>
                 <div class="action-buttons">
@@ -263,6 +265,7 @@ function openEditModal(item) {
     document.getElementById('input-item').value = item.item;
     document.getElementById('input-descricao').value = item.descricao;
     document.getElementById('input-status').value = item.status;
+    document.getElementById('input-responsavel').value = item.responsavel || '';
     document.getElementById('input-comentarios').value = item.comentarios || '';
     renderEvidenceList();
     document.getElementById('modal').classList.remove('hidden');
@@ -284,6 +287,7 @@ async function handleFormSubmit(e) {
         item: parseInt(document.getElementById('input-item').value),
         descricao: document.getElementById('input-descricao').value.trim(),
         status: document.getElementById('input-status').value,
+        responsavel: document.getElementById('input-responsavel').value.trim(),
         comentarios: document.getElementById('input-comentarios').value.trim(),
     };
 

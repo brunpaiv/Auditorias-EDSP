@@ -25,7 +25,7 @@ function doPost(e) {
   const action = body.action;
 
   if (action === 'add') {
-    const row = [body.data.id, body.data.node, body.data.programa, body.data.item, body.data.descricao, body.data.status, body.data.comentarios];
+    const row = [body.data.id, body.data.node, body.data.programa, body.data.item, body.data.descricao, body.data.status, body.data.responsavel, body.data.comentarios];
     sheet.appendRow(row);
     return ContentService.createTextOutput(JSON.stringify({ success: true, action: 'add' }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -40,7 +40,8 @@ function doPost(e) {
         sheet.getRange(i + 1, 4).setValue(body.data.item);
         sheet.getRange(i + 1, 5).setValue(body.data.descricao);
         sheet.getRange(i + 1, 6).setValue(body.data.status);
-        sheet.getRange(i + 1, 7).setValue(body.data.comentarios);
+        sheet.getRange(i + 1, 7).setValue(body.data.responsavel);
+        sheet.getRange(i + 1, 8).setValue(body.data.comentarios);
         break;
       }
     }

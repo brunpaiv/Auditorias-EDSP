@@ -13,13 +13,15 @@
                 <div>
                     <h1>Auditorias EDSP</h1>
                     <p class="subtitle">Regional-SP</p>
-                    <p class="slogan">Work hard. Have fun. Make history.</p>
-                    <p class="author">@brunpaiv</p>
                 </div>
                 <nav class="nav-menu">
                     <a href="index.html" class="nav-link active">Auditorias</a>
                     <a href="dashboard.html" class="nav-link">Dashboard</a>
                 </nav>
+            </div>
+            <div class="header-bottom">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" class="amazon-logo">
+                <p class="author">@brunapaiv</p>
             </div>
         </div>
     </header>
@@ -75,10 +77,11 @@
                         <th>Node</th>
                         <th>Programa</th>
                         <th>Item</th>
-                        <th>Itens Nao Conformes</th>
+                        <th>Itens Não Conformes</th>
                         <th>Status</th>
-                        <th>Comentarios</th>
-                        <th>Acoes</th>
+                        <th>Responsável</th>
+                        <th>Comentários</th>
+                        <th>Ações</th>
                         <th>Evidências</th>
                     </tr>
                 </thead>
@@ -111,8 +114,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="input-descricao">Itens Nao Conformes</label>
-                    <textarea id="input-descricao" rows="3" required placeholder="Descreva a nao conformidade..."></textarea>
+                    <label for="input-descricao">Itens Não Conformes</label>
+                    <textarea id="input-descricao" rows="3" required placeholder="Descreva a não conformidade..."></textarea>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -122,10 +125,14 @@
                             <option value="Concluído">Concluído</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="input-responsavel">Responsável</label>
+                        <input type="text" id="input-responsavel" placeholder="Nome do responsável">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="input-comentarios">Comentarios</label>
-                    <textarea id="input-comentarios" rows="2" placeholder="Acao tomada ou observacao..."></textarea>
+                    <label for="input-comentarios">Comentários</label>
+                    <textarea id="input-comentarios" rows="2" placeholder="Ação tomada ou observação..."></textarea>
                 </div>
                 <div class="evidence-group">
                     <label>Evidências</label>
