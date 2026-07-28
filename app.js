@@ -1,7 +1,7 @@
 // ===== CONFIGURACAO =====
 // IMPORTANTE: Substitua a URL abaixo pela URL do seu Google Apps Script
 // (Veja as instrucoes no arquivo google-apps-script.js)
-const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbw46is0HgQt4DZBVg2Az6v66NlYJ9uzbnDsBDixXDZgqiKydAI--zyjrWdlHOKqcxc/exec';
+const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbyKHgQIUc8mJ2D3bxbJGngQs81rmpMGzHQHCbl7urMcDTEaZLo46hnYgl4WRe95cfI/exec';
 
 // ===== DADOS INICIAIS (vazio - dados vem do Google Sheets) =====
 const defaultData = [];
@@ -466,9 +466,8 @@ function uploadEvidence(itemId, files) {
         reader.onload = (e) => {
             const img = new Image();
             img.onload = async () => {
-                // Comprimir imagem
                 const canvas = document.createElement('canvas');
-                const maxSize = 800;
+                const maxSize = 600;
                 let w = img.width;
                 let h = img.height;
                 if (w > maxSize || h > maxSize) {
@@ -478,11 +477,10 @@ function uploadEvidence(itemId, files) {
                 canvas.width = w;
                 canvas.height = h;
                 canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                const compressed = canvas.toDataURL('image/jpeg', 0.7);
+                const compressed = canvas.toDataURL('image/jpeg', 0.6);
                 const base64Only = compressed.replace(/^data:image\/\w+;base64,/, '');
 
                 try {
-                    // Upload para Google Drive via Apps Script
                     const response = await fetch(SHEETS_API_URL, {
                         method: 'POST',
                         body: JSON.stringify({
@@ -497,10 +495,10 @@ function uploadEvidence(itemId, files) {
                         saveEvidences(itemId, existingEvidences);
                         render();
                     } else {
-                        alert('Erro ao subir imagem.');
+                        alert('Erro ao subir imagem: ' + (result.error || 'desconhecido'));
                     }
                 } catch (err) {
-                    alert('Erro ao conectar com Google Drive.');
+                    alert('Erro ao conectar com servidor.');
                     console.error(err);
                 }
             };
