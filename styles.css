@@ -316,7 +316,49 @@ tr:last-child td {
 .action-buttons {
     display: flex;
     gap: 0.35rem;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+}
+
+.btn-done {
+    background: #27ae60;
+    color: white;
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+}
+
+.btn-done:hover {
+    background: #219a52;
+}
+
+.btn-pending {
+    background: #f39c12;
+    color: white;
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+}
+
+.btn-pending:hover {
+    background: #d68910;
+}
+
+/* Inline editable inputs */
+.inline-input {
+    width: 100%;
+    min-width: 100px;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    background: #fafafa;
+    transition: border-color 0.2s;
+}
+
+.inline-input:focus {
+    outline: none;
+    border-color: #ff9900;
+    background: white;
+    box-shadow: 0 0 0 2px rgba(255, 153, 0, 0.1);
 }
 
 /* Evidence cell in table */

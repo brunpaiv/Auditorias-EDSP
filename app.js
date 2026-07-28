@@ -201,11 +201,14 @@ function renderTable(data) {
             <td>${escapeHtml(item.programa)}</td>
             <td>${escapeHtml(item.descricao)}</td>
             <td><span class="status-badge status-${item.status.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()}">${item.status}</span></td>
-            <td>${escapeHtml(item.responsavel || '-')}</td>
+            <td>
+                <input type="text" class="inline-input" value="${escapeHtml(item.responsavel || '')}" placeholder="Preencher..." onchange="updateField(${item.id}, 'responsavel', this.value)">
+            </td>
             <td>
                 <div class="action-buttons">
+                    <button class="btn btn-done" onclick="setStatus(${item.id}, 'Concluido')" title="Marcar como Concluído">Concluído</button>
+                    <button class="btn btn-pending" onclick="setStatus(${item.id}, 'Pendente')" title="Marcar como Pendente">Pendente</button>
                     <button class="btn btn-edit" onclick="editItem(${item.id})" title="Editar">Editar</button>
-                    <button class="btn btn-danger" onclick="deleteItem(${item.id})" title="Excluir">Excluir</button>
                 </div>
             </td>
             <td>
@@ -217,7 +220,9 @@ function renderTable(data) {
                     </label>
                 </div>
             </td>
-            <td>${escapeHtml(item.comentarios || '-')}</td>
+            <td>
+                <input type="text" class="inline-input" value="${escapeHtml(item.comentarios || '')}" placeholder="Preencher..." onchange="updateField(${item.id}, 'comentarios', this.value)">
+            </td>
         </tr>
     `}).join('');
 }
@@ -312,6 +317,25 @@ async function handleFormSubmit(e) {
 function editItem(id) {
     const item = auditorias.find(a => a.id === id);
     if (item) openEditModal(item);
+}
+
+async function setStatus(id, newStatus) {
+    const index = auditorias.findIndex(a => a.id === id);
+    if (index === -1) return;
+    auditorias[index].status = newStatus;
+    if (useSheets) await updateInSheets(auditorias[index]);
+    if (!useSheets) saveLocal();
+    render();
+    updateLastUpdate();
+}
+
+async function updateField(id, field, value) {
+    const index = auditorias.findIndex(a => a.id === id);
+    if (index === -1) return;
+    auditorias[index][field] = value;
+    if (useSheets) await updateInSheets(auditorias[index]);
+    if (!useSheets) saveLocal();
+    updateLastUpdate();
 }
 
 async function deleteItem(id) {
