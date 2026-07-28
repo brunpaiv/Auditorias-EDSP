@@ -176,7 +176,7 @@ function renderTable(data) {
     if (data.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="7">
+                <td colspan="8">
                     <div class="empty-state">
                         <p>Nenhuma auditoria encontrada</p>
                         <span>Ajuste os filtros ou adicione uma nova auditoria</span>
@@ -187,7 +187,13 @@ function renderTable(data) {
         return;
     }
 
-    tbody.innerHTML = data.map(item => `
+    tbody.innerHTML = data.map(item => {
+        const evidences = getEvidences(item.id);
+        const evidenceHtml = evidences.length > 0
+            ? evidences.map(ev => `<img src="${ev}" class="evidence-thumb" onclick="viewEvidence('${ev}')">`).join('')
+            : '';
+
+        return `
         <tr>
             <td><strong>${escapeHtml(item.node)}</strong></td>
             <td>${escapeHtml(item.programa)}</td>
@@ -201,8 +207,17 @@ function renderTable(data) {
                     <button class="btn btn-danger" onclick="deleteItem(${item.id})" title="Excluir">Excluir</button>
                 </div>
             </td>
+            <td>
+                <div class="evidence-cell">
+                    ${evidenceHtml}
+                    <label class="btn-upload-evidence" title="Subir evidência">
+                        📷
+                        <input type="file" accept="image/*" multiple onchange="uploadEvidence(${item.id}, this.files)" style="display:none">
+                    </label>
+                </div>
+            </td>
         </tr>
-    `).join('');
+    `}).join('');
 }
 
 function renderCounters(filtered) {
@@ -402,6 +417,63 @@ function renderEvidenceList() {
 function removeEvidence(index) {
     evidenceFiles.splice(index, 1);
     renderEvidenceList();
+}
+
+// ===== EVIDENCIAS NA TABELA =====
+function getEvidences(itemId) {
+    const stored = localStorage.getItem('evidencias-edsp-' + itemId);
+    if (stored) {
+        return JSON.parse(stored);
+    }
+    return [];
+}
+
+function saveEvidences(itemId, evidences) {
+    localStorage.setItem('evidencias-edsp-' + itemId, JSON.stringify(evidences));
+}
+
+function uploadEvidence(itemId, files) {
+    const existingEvidences = getEvidences(itemId);
+
+    Array.from(files).forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            // Comprimir imagem para nao estourar localStorage
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const maxSize = 300;
+                let w = img.width;
+                let h = img.height;
+                if (w > maxSize || h > maxSize) {
+                    if (w > h) { h = (h / w) * maxSize; w = maxSize; }
+                    else { w = (w / h) * maxSize; h = maxSize; }
+                }
+                canvas.width = w;
+                canvas.height = h;
+                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                const compressed = canvas.toDataURL('image/jpeg', 0.7);
+                existingEvidences.push(compressed);
+                saveEvidences(itemId, existingEvidences);
+                render();
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function viewEvidence(src) {
+    const modal = document.createElement('div');
+    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:2000;cursor:pointer;';
+    modal.onclick = () => modal.remove();
+    const img = document.createElement('img');
+    img.src = src;
+    img.style.cssText = 'max-width:90%;max-height:90%;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.5);';
+    modal.appendChild(img);
+    document.body.appendChild(modal);
 }
 
 function resetData() {
