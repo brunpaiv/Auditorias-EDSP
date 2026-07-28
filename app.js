@@ -464,11 +464,11 @@ function uploadEvidence(itemId, files) {
 
         const reader = new FileReader();
         reader.onload = (e) => {
-            // Comprimir imagem para nao estourar localStorage
             const img = new Image();
-            img.onload = () => {
+            img.onload = async () => {
+                // Comprimir imagem
                 const canvas = document.createElement('canvas');
-                const maxSize = 300;
+                const maxSize = 800;
                 let w = img.width;
                 let h = img.height;
                 if (w > maxSize || h > maxSize) {
@@ -479,9 +479,30 @@ function uploadEvidence(itemId, files) {
                 canvas.height = h;
                 canvas.getContext('2d').drawImage(img, 0, 0, w, h);
                 const compressed = canvas.toDataURL('image/jpeg', 0.7);
-                existingEvidences.push(compressed);
-                saveEvidences(itemId, existingEvidences);
-                render();
+                const base64Only = compressed.replace(/^data:image\/\w+;base64,/, '');
+
+                try {
+                    // Upload para Google Drive via Apps Script
+                    const response = await fetch(SHEETS_API_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            action: 'uploadImage',
+                            data: { image: base64Only, fileName: file.name, itemId: itemId }
+                        }),
+                        headers: { 'Content-Type': 'text/plain' }
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        existingEvidences.push(result.url);
+                        saveEvidences(itemId, existingEvidences);
+                        render();
+                    } else {
+                        alert('Erro ao subir imagem.');
+                    }
+                } catch (err) {
+                    alert('Erro ao conectar com Google Drive.');
+                    console.error(err);
+                }
             };
             img.src = e.target.result;
         };
