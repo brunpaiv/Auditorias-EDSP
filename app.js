@@ -1,7 +1,7 @@
 // ===== CONFIGURACAO =====
 // IMPORTANTE: Substitua a URL abaixo pela URL do seu Google Apps Script
 // (Veja as instrucoes no arquivo google-apps-script.js)
-const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbyKHgQIUc8mJ2D3bxbJGngQs81rmpMGzHQHCbl7urMcDTEaZLo46hnYgl4WRe95cfI/exec';
+const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbzfDNUOBdeR0Oq2NU5FF6hj5veUYgvJqMubXTutPiDdYy55_2fqkgtfc_dZlWzhDIY/exec';
 
 // ===== DADOS INICIAIS (vazio - dados vem do Google Sheets) =====
 const defaultData = [];
@@ -62,7 +62,8 @@ async function loadFromSheets() {
             status: String(row.status || ''),
             responsavel: String(row.responsavel || ''),
             acoes: String(row.acoes || ''),
-            comentarios: String(row.comentarios || '')
+            comentarios: String(row.comentarios || ''),
+            evidencias: String(row.evidencias || '')
         }));
         nextId = Math.max(...auditorias.map(a => a.id), 99) + 1;
     } catch (error) {
@@ -445,20 +446,18 @@ function removeEvidence(index) {
 
 // ===== EVIDENCIAS NA TABELA =====
 function getEvidences(itemId) {
-    const stored = localStorage.getItem('evidencias-edsp-' + itemId);
-    if (stored) {
-        return JSON.parse(stored);
+    // Busca evidencias do objeto auditorias (vem do Sheets)
+    const item = auditorias.find(a => a.id === itemId);
+    if (item && item.evidencias) {
+        const evStr = String(item.evidencias);
+        if (evStr.length > 0) {
+            return evStr.split('|').filter(url => url.length > 0);
+        }
     }
     return [];
 }
 
-function saveEvidences(itemId, evidences) {
-    localStorage.setItem('evidencias-edsp-' + itemId, JSON.stringify(evidences));
-}
-
 function uploadEvidence(itemId, files) {
-    const existingEvidences = getEvidences(itemId);
-
     Array.from(files).forEach(file => {
         if (!file.type.startsWith('image/')) return;
 
@@ -491,8 +490,12 @@ function uploadEvidence(itemId, files) {
                     });
                     const result = await response.json();
                     if (result.success) {
-                        existingEvidences.push(result.url);
-                        saveEvidences(itemId, existingEvidences);
+                        // Atualizar localmente
+                        const item = auditorias.find(a => a.id === itemId);
+                        if (item) {
+                            const existing = item.evidencias ? String(item.evidencias) : '';
+                            item.evidencias = existing ? existing + '|' + result.url : result.url;
+                        }
                         render();
                     } else {
                         alert('Erro ao subir imagem: ' + (result.error || 'desconhecido'));
