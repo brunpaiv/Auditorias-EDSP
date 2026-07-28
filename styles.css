@@ -361,6 +361,39 @@ tr:last-child td {
     box-shadow: 0 0 0 2px rgba(255, 153, 0, 0.1);
 }
 
+.inline-select {
+    padding: 0.35rem 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    background: #fafafa;
+    cursor: pointer;
+}
+
+.inline-select:focus {
+    outline: none;
+    border-color: #ff9900;
+}
+
+.editable-cell {
+    min-width: 80px;
+    padding: 0.5rem;
+    cursor: text;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.editable-cell:hover {
+    background: #f8f8f8;
+}
+
+.editable-cell:focus {
+    outline: none;
+    background: #fff8ed;
+    box-shadow: inset 0 0 0 1px #ff9900;
+}
+
 /* Evidence cell in table */
 .evidence-cell {
     display: flex;

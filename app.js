@@ -62,6 +62,7 @@ async function loadFromSheets() {
             descricao: String(row.descricao || ''),
             status: String(row.status || ''),
             responsavel: String(row.responsavel || ''),
+            acoes: String(row.acoes || ''),
             comentarios: String(row.comentarios || '')
         }));
         nextId = Math.max(...auditorias.map(a => a.id), 99) + 1;
@@ -195,22 +196,21 @@ function renderTable(data) {
             ? evidences.map(ev => `<img src="${ev}" class="evidence-thumb" onclick="viewEvidence('${ev}')">`).join('')
             : '';
 
+        const statusSelected = item.status === 'Pendente' ? 'Pendente' : 'Concluido';
+
         return `
         <tr>
             <td><strong>${escapeHtml(item.node)}</strong></td>
             <td>${escapeHtml(item.programa)}</td>
             <td>${escapeHtml(item.descricao)}</td>
-            <td><span class="status-badge status-${item.status.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()}">${item.status}</span></td>
             <td>
-                <input type="text" class="inline-input" value="${escapeHtml(item.responsavel || '')}" placeholder="Preencher..." onchange="updateField(${item.id}, 'responsavel', this.value)">
+                <select class="inline-select" onchange="setStatus(${item.id}, this.value)">
+                    <option value="Pendente" ${statusSelected === 'Pendente' ? 'selected' : ''}>Pendente</option>
+                    <option value="Concluido" ${statusSelected === 'Concluido' ? 'selected' : ''}>Concluído</option>
+                </select>
             </td>
-            <td>
-                <div class="action-buttons">
-                    <button class="btn btn-done" onclick="setStatus(${item.id}, 'Concluido')" title="Marcar como Concluído">Concluído</button>
-                    <button class="btn btn-pending" onclick="setStatus(${item.id}, 'Pendente')" title="Marcar como Pendente">Pendente</button>
-                    <button class="btn btn-edit" onclick="editItem(${item.id})" title="Editar">Editar</button>
-                </div>
-            </td>
+            <td contenteditable="true" class="editable-cell" onblur="updateField(${item.id}, 'responsavel', this.textContent.trim())">${escapeHtml(item.responsavel || '')}</td>
+            <td contenteditable="true" class="editable-cell" onblur="updateField(${item.id}, 'acoes', this.textContent.trim())">${escapeHtml(item.acoes || '')}</td>
             <td>
                 <div class="evidence-cell">
                     ${evidenceHtml}
@@ -220,9 +220,7 @@ function renderTable(data) {
                     </label>
                 </div>
             </td>
-            <td>
-                <input type="text" class="inline-input" value="${escapeHtml(item.comentarios || '')}" placeholder="Preencher..." onchange="updateField(${item.id}, 'comentarios', this.value)">
-            </td>
+            <td contenteditable="true" class="editable-cell" onblur="updateField(${item.id}, 'comentarios', this.textContent.trim())">${escapeHtml(item.comentarios || '')}</td>
         </tr>
     `}).join('');
 }
