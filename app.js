@@ -177,7 +177,7 @@ function renderTable(data) {
     if (data.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="9">
+                <td colspan="8">
                     <div class="empty-state">
                         <p>Nenhuma auditoria encontrada</p>
                         <span>Ajuste os filtros ou adicione uma nova auditoria</span>
@@ -198,11 +198,9 @@ function renderTable(data) {
         <tr>
             <td><strong>${escapeHtml(item.node)}</strong></td>
             <td>${escapeHtml(item.programa)}</td>
-            <td>${item.item}</td>
             <td>${escapeHtml(item.descricao)}</td>
             <td><span class="status-badge status-${item.status.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()}">${item.status}</span></td>
             <td>${escapeHtml(item.responsavel || '-')}</td>
-            <td>${escapeHtml(item.comentarios || '-')}</td>
             <td>
                 <div class="action-buttons">
                     <button class="btn btn-edit" onclick="editItem(${item.id})" title="Editar">Editar</button>
@@ -218,6 +216,7 @@ function renderTable(data) {
                     </label>
                 </div>
             </td>
+            <td>${escapeHtml(item.comentarios || '-')}</td>
         </tr>
     `}).join('');
 }

@@ -54,14 +54,15 @@ header {
 }
 
 .header-content .slogan {
-    font-size: 0.85rem;
-    color: #ff9900;
+    font-size: 0.8rem;
+    color: #999;
     font-style: italic;
-    font-weight: 500;
+    margin-left: auto;
 }
 
 .header-content .author {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
+    color: #555;
     color: #888;
     margin-top: 0.15rem;
 }
