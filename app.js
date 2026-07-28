@@ -178,7 +178,7 @@ function renderTable(data) {
     if (data.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="8">
+                <td colspan="7">
                     <div class="empty-state">
                         <p>Nenhuma auditoria encontrada</p>
                         <span>Ajuste os filtros ou adicione uma nova auditoria</span>
@@ -202,14 +202,8 @@ function renderTable(data) {
             <td><strong>${escapeHtml(item.node)}</strong></td>
             <td>${escapeHtml(item.programa)}</td>
             <td>${escapeHtml(item.descricao)}</td>
-            <td>
-                <select class="inline-select ${statusSelected === 'Pendente' ? 'select-pendente' : 'select-concluido'}" onchange="setStatus(${item.id}, this.value)">
-                    <option value="Pendente" ${statusSelected === 'Pendente' ? 'selected' : ''}>Pendente</option>
-                    <option value="Concluido" ${statusSelected === 'Concluido' ? 'selected' : ''}>Concluído</option>
-                </select>
-            </td>
-            <td contenteditable="true" class="editable-cell" onblur="updateField(${item.id}, 'responsavel', this.textContent.trim())">${escapeHtml(item.responsavel || '')}</td>
             <td contenteditable="true" class="editable-cell" onblur="updateField(${item.id}, 'acoes', this.textContent.trim())">${escapeHtml(item.acoes || '')}</td>
+            <td contenteditable="true" class="editable-cell" onblur="updateField(${item.id}, 'responsavel', this.textContent.trim())">${escapeHtml(item.responsavel || '')}</td>
             <td>
                 <div class="evidence-cell">
                     ${evidenceHtml}
@@ -219,7 +213,12 @@ function renderTable(data) {
                     </label>
                 </div>
             </td>
-            <td contenteditable="true" class="editable-cell" onblur="updateField(${item.id}, 'comentarios', this.textContent.trim())">${escapeHtml(item.comentarios || '')}</td>
+            <td>
+                <select class="inline-select ${statusSelected === 'Pendente' ? 'select-pendente' : 'select-concluido'}" onchange="setStatus(${item.id}, this.value)">
+                    <option value="Pendente" ${statusSelected === 'Pendente' ? 'selected' : ''}>Pendente</option>
+                    <option value="Concluido" ${statusSelected === 'Concluido' ? 'selected' : ''}>Concluído</option>
+                </select>
+            </td>
         </tr>
     `}).join('');
 }
