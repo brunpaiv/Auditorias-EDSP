@@ -193,7 +193,7 @@ function renderTable(data) {
     tbody.innerHTML = data.map(item => {
         const evidences = getEvidences(item.id);
         const evidenceHtml = evidences.length > 0
-            ? evidences.map(ev => `<img src="${ev}" class="evidence-thumb" onclick="viewEvidence('${ev}')">`).join('')
+            ? evidences.map((ev, idx) => `<div class="evidence-wrapper"><img src="${ev}" class="evidence-thumb" onclick="viewEvidence('${ev}')"><span class="evidence-remove" onclick="removeEvidence(${item.id}, ${idx})">x</span></div>`).join('')
             : '';
 
         const statusSelected = item.status === 'Pendente' ? 'Pendente' : 'Concluido';
@@ -520,6 +520,31 @@ function viewEvidence(src) {
     img.style.cssText = 'max-width:90%;max-height:90%;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.5);';
     modal.appendChild(img);
     document.body.appendChild(modal);
+}
+
+async function removeEvidence(itemId, index) {
+    if (!confirm('Deseja excluir esta evidência?')) return;
+
+    const item = auditorias.find(a => a.id === itemId);
+    if (!item || !item.evidencias) return;
+
+    const evidences = String(item.evidencias).split('|').filter(url => url.length > 0);
+    evidences.splice(index, 1);
+    item.evidencias = evidences.join('|');
+
+    // Atualizar no Sheets
+    if (useSheets) {
+        try {
+            await fetch(SHEETS_API_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'update', data: { ...item } }),
+                headers: { 'Content-Type': 'text/plain' }
+            });
+        } catch (err) {
+            console.error('Erro ao remover evidência:', err);
+        }
+    }
+    render();
 }
 
 function resetData() {

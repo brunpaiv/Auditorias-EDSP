@@ -431,6 +431,35 @@ tr:last-child td {
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
+.evidence-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.evidence-remove {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #e74c3c;
+    color: white;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    line-height: 1;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.evidence-remove:hover {
+    background: #c0392b;
+    transform: scale(1.2);
+}
+
 .btn-upload-evidence {
     display: inline-flex;
     align-items: center;
