@@ -30,6 +30,7 @@ async function init() {
     
     setupEventListeners();
     setupEvidenceListeners();
+    document.getElementById('filter-status').value = 'Pendente';
     render();
     updateLastUpdate();
 }
