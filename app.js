@@ -1,7 +1,7 @@
 // ===== CONFIGURACAO =====
 // IMPORTANTE: Substitua a URL abaixo pela URL do seu Google Apps Script
 // (Veja as instrucoes no arquivo google-apps-script.js)
-const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbxJbCd1e0vBBRqpcA2fsjwQkWd0A1qPu9lzVgVOZL1SbRymxqq5c44IdHmSbJk4OTw/exec';
+const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbyhRBu5iknA-Oa1zTiJjn75ekLQh4BA1B8xxio0AzSMFWGTVEtaZrYX4Mc_v_Bylzs/exec';
 
 // ===== DADOS INICIAIS (vazio - dados vem do Google Sheets) =====
 const defaultData = [];
@@ -434,12 +434,12 @@ function renderEvidenceList() {
         <div class="evidence-item">
             <img src="${file.data}" alt="${file.name}">
             <span>${file.name.substring(0, 15)}...</span>
-            <span class="remove-evidence" onclick="removeEvidence(${index})">x</span>
+            <span class="remove-evidence" onclick="removeModalEvidence(${index})">x</span>
         </div>
     `).join('');
 }
 
-function removeEvidence(index) {
+function removeModalEvidence(index) {
     evidenceFiles.splice(index, 1);
     renderEvidenceList();
 }
@@ -532,12 +532,12 @@ async function removeEvidence(itemId, index) {
     evidences.splice(index, 1);
     item.evidencias = evidences.join('|');
 
-    // Atualizar no Sheets
+    // Atualizar apenas a coluna evidencias no Sheets
     if (useSheets) {
         try {
             await fetch(SHEETS_API_URL, {
                 method: 'POST',
-                body: JSON.stringify({ action: 'update', data: { ...item } }),
+                body: JSON.stringify({ action: 'updateEvidencias', data: { id: item.id, evidencias: item.evidencias } }),
                 headers: { 'Content-Type': 'text/plain' }
             });
         } catch (err) {
