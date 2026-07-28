@@ -8,13 +8,13 @@ const defaultData = [];
 const COLORS = {
     primary: '#232f3e',
     orange: '#ff9900',
-    green: '#27ae60',
-    yellow: '#f39c12',
-    red: '#e74c3c',
-    blue: '#3498db',
-    purple: '#9b59b6',
-    teal: '#1abc9c',
-    nodeColors: ['#ff9900', '#3498db', '#27ae60', '#9b59b6', '#e74c3c', '#1abc9c', '#f39c12', '#2c3e50']
+    green: '#a8d5ba',
+    yellow: '#f9e79f',
+    red: '#f5b7b1',
+    blue: '#aed6f1',
+    purple: '#d2b4de',
+    teal: '#a3e4d7',
+    nodeColors: ['#aed6f1', '#a8d5ba', '#f9e79f', '#d2b4de', '#f5b7b1', '#a3e4d7', '#fadbd8', '#d5dbdb']
 };
 
 // ===== INICIALIZACAO =====
@@ -268,14 +268,17 @@ function renderSummaryTable() {
         .sort((a, b) => b[1].total - a[1].total)
         .map(([node, data]) => {
             const rate = data.total > 0 ? Math.round((data.done / data.total) * 100) : 0;
-            const rateClass = rate === 100 ? 'status-concluido' : rate >= 50 ? 'status-pendente' : 'status-badge';
+            let rateClass = '';
+            if (rate === 100) rateClass = 'rate-green';
+            else if (rate >= 50) rateClass = 'rate-yellow';
+            else rateClass = 'rate-red';
             return `
                 <tr>
                     <td><strong>${node}</strong></td>
                     <td>${data.total}</td>
                     <td>${data.pending}</td>
                     <td>${data.done}</td>
-                    <td><span class="status-badge ${rateClass}">${rate}%</span></td>
+                    <td><span class="rate-badge ${rateClass}">${rate}%</span></td>
                 </tr>
             `;
         }).join('');
