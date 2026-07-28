@@ -268,17 +268,22 @@ function renderSummaryTable() {
         .sort((a, b) => b[1].total - a[1].total)
         .map(([node, data]) => {
             const rate = data.total > 0 ? Math.round((data.done / data.total) * 100) : 0;
-            let rateClass = '';
-            if (rate === 100) rateClass = 'rate-green';
-            else if (rate >= 50) rateClass = 'rate-yellow';
-            else rateClass = 'rate-red';
+            let barColor = '';
+            if (rate === 100) barColor = '#27ae60';
+            else if (rate >= 50) barColor = '#f39c12';
+            else barColor = '#e74c3c';
             return `
                 <tr>
                     <td><strong>${node}</strong></td>
                     <td>${data.total}</td>
                     <td>${data.pending}</td>
                     <td>${data.done}</td>
-                    <td><span class="rate-badge ${rateClass}">${rate}%</span></td>
+                    <td>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width:${rate}%; background:${barColor};"></div>
+                            <span class="progress-bar-text">${rate}%</span>
+                        </div>
+                    </td>
                 </tr>
             `;
         }).join('');
