@@ -204,7 +204,7 @@ function renderTable(data) {
             <td>${escapeHtml(item.programa)}</td>
             <td>${escapeHtml(item.descricao)}</td>
             <td>
-                <select class="inline-select" onchange="setStatus(${item.id}, this.value)">
+                <select class="inline-select ${statusSelected === 'Pendente' ? 'select-pendente' : 'select-concluido'}" onchange="setStatus(${item.id}, this.value)">
                     <option value="Pendente" ${statusSelected === 'Pendente' ? 'selected' : ''}>Pendente</option>
                     <option value="Concluido" ${statusSelected === 'Concluido' ? 'selected' : ''}>Concluído</option>
                 </select>

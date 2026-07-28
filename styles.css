@@ -369,11 +369,24 @@ tr:last-child td {
     font-family: inherit;
     background: #fafafa;
     cursor: pointer;
+    font-weight: 600;
 }
 
 .inline-select:focus {
     outline: none;
     border-color: #ff9900;
+}
+
+.select-pendente {
+    background: #fff3cd;
+    color: #856404;
+    border-color: #f39c12;
+}
+
+.select-concluido {
+    background: #d4edda;
+    color: #155724;
+    border-color: #27ae60;
 }
 
 .editable-cell {
