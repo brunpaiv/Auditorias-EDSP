@@ -48,9 +48,7 @@ async function init() {
         loadFromLocal();
     }
 
-    // Registrar plugin de datalabels
-    Chart.register(ChartDataLabels);
-
+    // Renderizar graficos
     renderCounters();
     renderCharts();
     renderSummaryTable();
@@ -118,11 +116,7 @@ function renderStatusChart() {
                     position: 'bottom',
                     labels: { font: { size: 13 }, padding: 20 }
                 },
-                datalabels: {
-                    color: '#fff',
-                    font: { size: 16, weight: 'bold' },
-                    formatter: (value) => value > 0 ? value : ''
-                }
+                datalabels: { display: false }
             }
         }
     });
@@ -152,13 +146,7 @@ function renderNodesChart() {
             maintainAspectRatio: false,
             plugins: {
                 legend: { display: false },
-                datalabels: {
-                    anchor: 'end',
-                    align: 'top',
-                    color: '#232f3e',
-                    font: { size: 14, weight: 'bold' },
-                    formatter: (value) => value > 0 ? value : ''
-                }
+                datalabels: { display: false }
             },
             scales: {
                 y: {
@@ -205,11 +193,7 @@ function renderStatusByNodeChart() {
                     position: 'bottom',
                     labels: { font: { size: 12 } }
                 },
-                datalabels: {
-                    color: '#fff',
-                    font: { size: 12, weight: 'bold' },
-                    formatter: (value) => value > 0 ? value : ''
-                }
+                datalabels: { display: false }
             },
             scales: {
                 x: { stacked: true },
@@ -244,13 +228,7 @@ function renderRankingChart() {
             maintainAspectRatio: false,
             plugins: {
                 legend: { display: false },
-                datalabels: {
-                    anchor: 'end',
-                    align: 'right',
-                    color: '#232f3e',
-                    font: { size: 14, weight: 'bold' },
-                    formatter: (value) => value > 0 ? value : ''
-                }
+                datalabels: { display: false }
             },
             scales: {
                 x: { beginAtZero: true, ticks: { stepSize: 1 } }
