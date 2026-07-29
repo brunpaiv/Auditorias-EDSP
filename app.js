@@ -204,7 +204,7 @@ function renderTable(data) {
             <td><strong>${escapeHtml(item.node)}</strong></td>
             <td>${escapeHtml(item.programa)}</td>
             <td>${escapeHtml(item.descricao)}</td>
-            <td contenteditable="true" class="editable-cell" onblur="updateField(${item.id}, 'acoes', this.textContent.trim())">${escapeHtml(item.acoes || '')}</td>
+            <td contenteditable="true" class="editable-cell" onblur="updateField(${item.id}, 'comentarios', this.textContent.trim())">${escapeHtml(item.acoes || item.comentarios || '')}</td>
             <td contenteditable="true" class="editable-cell" onblur="updateField(${item.id}, 'responsavel', this.textContent.trim())">${escapeHtml(item.responsavel || '')}</td>
             <td>
                 <div class="evidence-cell">
