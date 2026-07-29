@@ -216,7 +216,7 @@ function renderTable(data) {
                 </div>
             </td>
             <td>
-                <select class="inline-select ${statusSelected === 'Pendente' ? 'select-pendente' : 'select-concluido'}" onchange="setStatus(${item.id}, this.value)">
+                <select class="inline-select ${statusSelected === 'Pendente' ? 'select-pendente' : 'select-concluido'}" onchange="this.className='inline-select '+(this.value==='Pendente'?'select-pendente':'select-concluido'); setStatus(${item.id}, this.value)">
                     <option value="Pendente" ${statusSelected === 'Pendente' ? 'selected' : ''}>Pendente</option>
                     <option value="Concluido" ${statusSelected === 'Concluido' ? 'selected' : ''}>Concluído</option>
                 </select>
