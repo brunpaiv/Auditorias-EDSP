@@ -7,14 +7,14 @@ const defaultData = [];
 // ===== CORES =====
 const COLORS = {
     primary: '#232f3e',
-    orange: '#ff9900',
-    green: '#a8d5ba',
-    yellow: '#f9e79f',
-    red: '#f5b7b1',
-    blue: '#aed6f1',
-    purple: '#d2b4de',
-    teal: '#a3e4d7',
-    nodeColors: ['#aed6f1', '#a8d5ba', '#f9e79f', '#d2b4de', '#f5b7b1', '#a3e4d7', '#fadbd8', '#d5dbdb']
+    orange: '#c87f0a',
+    green: '#1e7a46',
+    yellow: '#b8860b',
+    red: '#a93226',
+    blue: '#1a5276',
+    purple: '#6c3483',
+    teal: '#117a65',
+    nodeColors: ['#1a5276', '#1e7a46', '#b8860b', '#6c3483', '#a93226', '#117a65', '#7d6608', '#2c3e50']
 };
 
 // ===== INICIALIZACAO =====

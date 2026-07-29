@@ -30,6 +30,7 @@ async function init() {
     
     setupEventListeners();
     setupEvidenceListeners();
+    document.getElementById('filter-status').value = 'Pendente';
     render();
     updateLastUpdate();
 }
@@ -225,9 +226,9 @@ function renderTable(data) {
 }
 
 function renderCounters(filtered) {
-    const total = filtered.length;
-    const pending = filtered.filter(i => i.status === 'Pendente').length;
-    const done = filtered.filter(i => i.status === 'Concluído' || i.status === 'Concluido').length;
+    const total = auditorias.length;
+    const pending = auditorias.filter(i => i.status === 'Pendente').length;
+    const done = auditorias.filter(i => i.status === 'Concluído' || i.status === 'Concluido').length;
 
     document.getElementById('total-count').textContent = total;
     document.getElementById('pending-count').textContent = pending;

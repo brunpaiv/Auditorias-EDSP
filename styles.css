@@ -287,6 +287,10 @@ tr:hover {
     background: #f8f9fa;
 }
 
+thead tr:hover {
+    background: #232f3e;
+}
+
 tr:last-child td {
     border-bottom: none;
 }
