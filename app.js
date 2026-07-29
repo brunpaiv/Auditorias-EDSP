@@ -352,14 +352,15 @@ async function deleteItem(id) {
 // ===== EXPORTAR CSV =====
 function exportCSV() {
     const filtered = getFilteredData();
-    const headers = ['Node', 'Programa', 'Item', 'Itens Nao Conformes', 'Status', 'Comentarios'];
+    const headers = ['Node', 'Programa', 'Descricao', 'Status', 'Responsavel', 'Acoes', 'Comentarios'];
     const rows = filtered.map(item => [
-        item.node,
-        item.programa,
-        item.item,
-        `"${item.descricao.replace(/"/g, '""')}"`,
-        item.status,
-        `"${(item.comentarios || '').replace(/"/g, '""')}"`
+        '"' + (item.node || '').replace(/"/g, '""') + '"',
+        '"' + (item.programa || '').replace(/"/g, '""') + '"',
+        '"' + (item.descricao || '').replace(/"/g, '""') + '"',
+        '"' + (item.status || '').replace(/"/g, '""') + '"',
+        '"' + (item.responsavel || '').replace(/"/g, '""') + '"',
+        '"' + (item.acoes || '').replace(/"/g, '""') + '"',
+        '"' + (item.comentarios || '').replace(/"/g, '""') + '"'
     ]);
 
     const csvContent = [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');

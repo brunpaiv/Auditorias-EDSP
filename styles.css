@@ -61,9 +61,9 @@ header {
 }
 
 .header-content .author {
-    font-size: 0.8rem;
-    color: #555;
-    color: #888;
+    font-size: 1.1rem;
+    color: #000000;
+    font-weight: 600;
     margin-top: 0.15rem;
 }
 
