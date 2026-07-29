@@ -204,7 +204,7 @@ function renderTable(data) {
             <td><strong>${escapeHtml(item.node)}</strong></td>
             <td>${escapeHtml(item.programa)}</td>
             <td>${escapeHtml(item.descricao)}</td>
-            <td contenteditable="true" class="editable-cell" onblur="updateField(${item.id}, 'comentarios', this.textContent.trim())">${escapeHtml(item.acoes || item.comentarios || '')}</td>
+            <td contenteditable="true" class="editable-cell" onblur="updateAcoes(${item.id}, this.textContent.trim())">${escapeHtml(item.comentarios || '')}</td>
             <td contenteditable="true" class="editable-cell" onblur="updateField(${item.id}, 'responsavel', this.textContent.trim())">${escapeHtml(item.responsavel || '')}</td>
             <td>
                 <div class="evidence-cell">
@@ -331,6 +331,15 @@ async function updateField(id, field, value) {
     const index = auditorias.findIndex(a => a.id === id);
     if (index === -1) return;
     auditorias[index][field] = value;
+    if (useSheets) await updateInSheets(auditorias[index]);
+    if (!useSheets) saveLocal();
+    updateLastUpdate();
+}
+
+async function updateAcoes(id, value) {
+    const index = auditorias.findIndex(a => a.id === id);
+    if (index === -1) return;
+    auditorias[index].comentarios = value;
     if (useSheets) await updateInSheets(auditorias[index]);
     if (!useSheets) saveLocal();
     updateLastUpdate();
