@@ -260,6 +260,7 @@ main {
 table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 thead {
@@ -281,6 +282,8 @@ td {
     border-bottom: 1px solid #eee;
     font-size: 0.9rem;
     vertical-align: top;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 tr:hover {
@@ -395,10 +398,14 @@ tr:last-child td {
 
 .editable-cell {
     min-width: 80px;
+    max-width: 200px;
     padding: 0.5rem;
     cursor: text;
     border-radius: 4px;
     transition: background 0.2s;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
 }
 
 .editable-cell:hover {
