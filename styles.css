@@ -263,6 +263,16 @@ table {
     table-layout: fixed;
 }
 
+/* Larguras das colunas */
+th:nth-child(1) { width: 7%; }
+th:nth-child(2) { width: 8%; }
+th:nth-child(3) { width: 28%; }
+th:nth-child(4) { width: 15%; }
+th:nth-child(5) { width: 10%; }
+th:nth-child(6) { width: 10%; }
+th:nth-child(7) { width: 8%; }
+th:nth-child(8) { width: 14%; }
+
 thead {
     background: #232f3e;
     color: white;
@@ -406,6 +416,7 @@ tr:last-child td {
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: pre-wrap;
+    text-align: center;
 }
 
 .editable-cell:hover {
