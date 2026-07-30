@@ -207,7 +207,7 @@ function renderTable(data) {
             <td>${escapeHtml(item.descricao)}</td>
             <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateAcoes(${item.id}, this.textContent.trim())">${escapeHtml(item.comentarios || '')}</td>
             <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateResponsavel(${item.id}, this.textContent.trim())">${escapeHtml(item.responsavel || '')}</td>
-            <td contenteditable="true" spellcheck="false" class="editable-cell ${getDateColor(item.data_auditoria)}" onblur="updateData(${item.id}, this.textContent.trim())">${escapeHtml(item.data_auditoria || '')}</td>
+            <td contenteditable="true" spellcheck="false" class="editable-cell ${getDateColor(item.data_auditoria)}" onblur="updateDataColor(this, ${item.id}, this.textContent.trim())">${escapeHtml(item.data_auditoria || '')}</td>
             <td>
                 <div class="evidence-cell">
                     ${evidenceHtml}
@@ -357,6 +357,25 @@ async function updateData(id, value) {
     }
     if (!useSheets) saveLocal();
     render();
+    updateLastUpdate();
+}
+
+function updateDataColor(cell, id, value) {
+    const index = auditorias.findIndex(a => a.id === id);
+    if (index === -1) return;
+    auditorias[index].data_auditoria = value;
+    
+    // Atualizar cor da celula
+    cell.classList.remove('date-green', 'date-yellow', 'date-red');
+    var color = getDateColor(value);
+    if (color) cell.classList.add(color);
+    
+    // Salvar
+    if (useSheets) {
+        var url = SHEETS_API_URL + '?action=updateData&id=' + id + '&data_auditoria=' + encodeURIComponent(value);
+        fetch(url, { mode: 'no-cors' });
+    }
+    if (!useSheets) saveLocal();
     updateLastUpdate();
 }
 
