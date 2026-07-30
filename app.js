@@ -207,9 +207,7 @@ function renderTable(data) {
             <td>${escapeHtml(item.descricao)}</td>
             <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateAcoes(${item.id}, this.textContent.trim())">${escapeHtml(item.comentarios || '')}</td>
             <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateResponsavel(${item.id}, this.textContent.trim())">${escapeHtml(item.responsavel || '')}</td>
-            <td>
-                <input type="date" class="inline-input" value="${item.data_auditoria || ''}" onchange="updateData(${item.id}, this.value)">
-            </td>
+            <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateData(${item.id}, this.textContent.trim())">${escapeHtml(item.data_auditoria || '')}</td>
             <td>
                 <div class="evidence-cell">
                     ${evidenceHtml}
@@ -354,8 +352,8 @@ async function updateData(id, value) {
     if (index === -1) return;
     auditorias[index].data_auditoria = value;
     if (useSheets) {
-        var img = new Image();
-        img.src = SHEETS_API_URL + '?action=updateData&id=' + id + '&data_auditoria=' + encodeURIComponent(value);
+        var url = SHEETS_API_URL + '?action=updateData&id=' + id + '&data_auditoria=' + encodeURIComponent(value);
+        fetch(url, { mode: 'no-cors' });
     }
     if (!useSheets) saveLocal();
     updateLastUpdate();
@@ -366,8 +364,8 @@ async function updateResponsavel(id, value) {
     if (index === -1) return;
     auditorias[index].responsavel = value;
     if (useSheets) {
-        var img = new Image();
-        img.src = SHEETS_API_URL + '?action=updateResponsavel&id=' + id + '&responsavel=' + encodeURIComponent(value);
+        var url = SHEETS_API_URL + '?action=updateResponsavel&id=' + id + '&responsavel=' + encodeURIComponent(value);
+        fetch(url, { mode: 'no-cors' });
     }
     if (!useSheets) saveLocal();
     updateLastUpdate();
