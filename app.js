@@ -1,7 +1,7 @@
 // ===== CONFIGURACAO =====
 // IMPORTANTE: Substitua a URL abaixo pela URL do seu Google Apps Script
 // (Veja as instrucoes no arquivo google-apps-script.js)
-const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbxbQ9flEsv9wmmcQTRFl6D7DkAIgfLTBAyrYqyJY5AKszOYv6Vh4zYnFPe458NEcw4/exec';
+const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbz9ezqbM6VGLcUxsguVJuqqUlMgUXMFvo0qScQ4DgxUXtIPT327e68zkJa2mAYst8c/exec';
 
 // ===== DADOS INICIAIS (vazio - dados vem do Google Sheets) =====
 const defaultData = [];
@@ -206,7 +206,7 @@ function renderTable(data) {
             <td>${escapeHtml(item.programa)}</td>
             <td>${escapeHtml(item.descricao)}</td>
             <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateAcoes(${item.id}, this.textContent.trim())">${escapeHtml(item.comentarios || '')}</td>
-            <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateField(${item.id}, 'responsavel', this.textContent.trim())">${escapeHtml(item.responsavel || '')}</td>
+            <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateResponsavel(${item.id}, this.textContent.trim())">${escapeHtml(item.responsavel || '')}</td>
             <td>
                 <input type="date" class="inline-input" value="${item.data_auditoria || ''}" onchange="updateData(${item.id}, this.value)">
             </td>
@@ -353,7 +353,36 @@ async function updateData(id, value) {
     const index = auditorias.findIndex(a => a.id === id);
     if (index === -1) return;
     auditorias[index].data_auditoria = value;
-    if (useSheets) await updateInSheets(auditorias[index]);
+    if (useSheets) {
+        try {
+            await fetch(SHEETS_API_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'updateData', data: { id: id, data_auditoria: value } }),
+                headers: { 'Content-Type': 'text/plain' }
+            });
+        } catch (err) {
+            console.error('Erro ao salvar data:', err);
+        }
+    }
+    if (!useSheets) saveLocal();
+    updateLastUpdate();
+}
+
+async function updateResponsavel(id, value) {
+    const index = auditorias.findIndex(a => a.id === id);
+    if (index === -1) return;
+    auditorias[index].responsavel = value;
+    if (useSheets) {
+        try {
+            await fetch(SHEETS_API_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'updateResponsavel', data: { id: id, responsavel: value } }),
+                headers: { 'Content-Type': 'text/plain' }
+            });
+        } catch (err) {
+            console.error('Erro ao salvar responsavel:', err);
+        }
+    }
     if (!useSheets) saveLocal();
     updateLastUpdate();
 }
