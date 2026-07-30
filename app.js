@@ -356,6 +356,7 @@ async function updateData(id, value) {
         fetch(url, { mode: 'no-cors' });
     }
     if (!useSheets) saveLocal();
+    render();
     updateLastUpdate();
 }
 
