@@ -1,7 +1,7 @@
 // ===== CONFIGURACAO =====
 // IMPORTANTE: Substitua a URL abaixo pela URL do seu Google Apps Script
 // (Veja as instrucoes no arquivo google-apps-script.js)
-const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbz9ezqbM6VGLcUxsguVJuqqUlMgUXMFvo0qScQ4DgxUXtIPT327e68zkJa2mAYst8c/exec';
+const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbyE5-WafNxMRp2wmobUEHeifBBw2BPrHF2lnOn6B0C00rMIP3Aaru88-clwFLfeMQw/exec';
 
 // ===== DADOS INICIAIS (vazio - dados vem do Google Sheets) =====
 const defaultData = [];
@@ -354,15 +354,8 @@ async function updateData(id, value) {
     if (index === -1) return;
     auditorias[index].data_auditoria = value;
     if (useSheets) {
-        try {
-            await fetch(SHEETS_API_URL, {
-                method: 'POST',
-                body: JSON.stringify({ action: 'updateData', data: { id: id, data_auditoria: value } }),
-                headers: { 'Content-Type': 'text/plain' }
-            });
-        } catch (err) {
-            console.error('Erro ao salvar data:', err);
-        }
+        var img = new Image();
+        img.src = SHEETS_API_URL + '?action=updateData&id=' + id + '&data_auditoria=' + encodeURIComponent(value);
     }
     if (!useSheets) saveLocal();
     updateLastUpdate();
@@ -373,15 +366,8 @@ async function updateResponsavel(id, value) {
     if (index === -1) return;
     auditorias[index].responsavel = value;
     if (useSheets) {
-        try {
-            await fetch(SHEETS_API_URL, {
-                method: 'POST',
-                body: JSON.stringify({ action: 'updateResponsavel', data: { id: id, responsavel: value } }),
-                headers: { 'Content-Type': 'text/plain' }
-            });
-        } catch (err) {
-            console.error('Erro ao salvar responsavel:', err);
-        }
+        var img = new Image();
+        img.src = SHEETS_API_URL + '?action=updateResponsavel&id=' + id + '&responsavel=' + encodeURIComponent(value);
     }
     if (!useSheets) saveLocal();
     updateLastUpdate();

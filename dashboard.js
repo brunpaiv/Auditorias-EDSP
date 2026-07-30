@@ -1,5 +1,5 @@
 // ===== CONFIGURACAO =====
-const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbz9ezqbM6VGLcUxsguVJuqqUlMgUXMFvo0qScQ4DgxUXtIPT327e68zkJa2mAYst8c/exec';
+const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbyE5-WafNxMRp2wmobUEHeifBBw2BPrHF2lnOn6B0C00rMIP3Aaru88-clwFLfeMQw/exec';
 
 // ===== DADOS INICIAIS (vazio - dados vem do Google Sheets) =====
 const defaultData = [];
