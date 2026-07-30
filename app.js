@@ -205,8 +205,8 @@ function renderTable(data) {
             <td><strong>${escapeHtml(item.node)}</strong></td>
             <td>${escapeHtml(item.programa)}</td>
             <td>${escapeHtml(item.descricao)}</td>
-            <td contenteditable="true" class="editable-cell" onblur="updateAcoes(${item.id}, this.textContent.trim())">${escapeHtml(item.comentarios || '')}</td>
-            <td contenteditable="true" class="editable-cell" onblur="updateField(${item.id}, 'responsavel', this.textContent.trim())">${escapeHtml(item.responsavel || '')}</td>
+            <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateAcoes(${item.id}, this.textContent.trim())">${escapeHtml(item.comentarios || '')}</td>
+            <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateField(${item.id}, 'responsavel', this.textContent.trim())">${escapeHtml(item.responsavel || '')}</td>
             <td>
                 <input type="date" class="inline-input" value="${item.data_auditoria || ''}" onchange="updateField(${item.id}, 'data_auditoria', this.value)">
             </td>
