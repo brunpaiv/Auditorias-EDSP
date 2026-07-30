@@ -207,7 +207,7 @@ function renderTable(data) {
             <td>${escapeHtml(item.descricao)}</td>
             <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateAcoes(${item.id}, this.textContent.trim())">${escapeHtml(item.comentarios || '')}</td>
             <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateResponsavel(${item.id}, this.textContent.trim())">${escapeHtml(item.responsavel || '')}</td>
-            <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateData(${item.id}, this.textContent.trim())">${escapeHtml(item.data_auditoria || '')}</td>
+            <td contenteditable="true" spellcheck="false" class="editable-cell ${getDateColor(item.data_auditoria)}" onblur="updateData(${item.id}, this.textContent.trim())">${escapeHtml(item.data_auditoria || '')}</td>
             <td>
                 <div class="evidence-cell">
                     ${evidenceHtml}
@@ -415,6 +415,32 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+function getDateColor(dateStr) {
+    if (!dateStr || dateStr.length < 8) return '';
+    
+    var parts = dateStr.split('-');
+    var targetDate;
+    
+    if (parts.length === 3) {
+        targetDate = new Date(parts[0], parts[1] - 1, parts[2]);
+    } else {
+        parts = dateStr.split('/');
+        if (parts.length === 3) {
+            targetDate = new Date(parts[2], parts[1] - 1, parts[0]);
+        } else {
+            return '';
+        }
+    }
+    
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var diff = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
+    
+    if (diff <= 3) return 'date-red';
+    if (diff <= 7) return 'date-yellow';
+    return 'date-green';
 }
 
 // ===== EVIDENCIAS =====

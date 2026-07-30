@@ -429,6 +429,25 @@ tr:last-child td {
     box-shadow: inset 0 0 0 1px #ff9900;
 }
 
+/* Date colors */
+.date-green {
+    background: #d4edda;
+    color: #155724;
+    font-weight: 600;
+}
+
+.date-yellow {
+    background: #fff3cd;
+    color: #856404;
+    font-weight: 600;
+}
+
+.date-red {
+    background: #f8d7da;
+    color: #721c24;
+    font-weight: 600;
+}
+
 /* Evidence cell in table */
 .evidence-cell {
     display: flex;
