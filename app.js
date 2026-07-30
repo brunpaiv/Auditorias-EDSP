@@ -1,7 +1,7 @@
 // ===== CONFIGURACAO =====
 // IMPORTANTE: Substitua a URL abaixo pela URL do seu Google Apps Script
 // (Veja as instrucoes no arquivo google-apps-script.js)
-const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbyhRBu5iknA-Oa1zTiJjn75ekLQh4BA1B8xxio0AzSMFWGTVEtaZrYX4Mc_v_Bylzs/exec';
+const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbxbQ9flEsv9wmmcQTRFl6D7DkAIgfLTBAyrYqyJY5AKszOYv6Vh4zYnFPe458NEcw4/exec';
 
 // ===== DADOS INICIAIS (vazio - dados vem do Google Sheets) =====
 const defaultData = [];
@@ -62,7 +62,7 @@ async function loadFromSheets() {
             descricao: String(row.descricao || ''),
             status: String(row.status || ''),
             responsavel: String(row.responsavel || ''),
-            data_auditoria: String(row.data_auditoria || ''),
+            data_auditoria: String(row.data || ''),
             acoes: String(row.acoes || ''),
             comentarios: String(row.comentarios || ''),
             evidencias: String(row.evidencias || '')
@@ -208,7 +208,7 @@ function renderTable(data) {
             <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateAcoes(${item.id}, this.textContent.trim())">${escapeHtml(item.comentarios || '')}</td>
             <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateField(${item.id}, 'responsavel', this.textContent.trim())">${escapeHtml(item.responsavel || '')}</td>
             <td>
-                <input type="date" class="inline-input" value="${item.data_auditoria || ''}" onchange="updateField(${item.id}, 'data_auditoria', this.value)">
+                <input type="date" class="inline-input" value="${item.data_auditoria || ''}" onchange="updateData(${item.id}, this.value)">
             </td>
             <td>
                 <div class="evidence-cell">
@@ -344,6 +344,15 @@ async function updateAcoes(id, value) {
     const index = auditorias.findIndex(a => a.id === id);
     if (index === -1) return;
     auditorias[index].comentarios = value;
+    if (useSheets) await updateInSheets(auditorias[index]);
+    if (!useSheets) saveLocal();
+    updateLastUpdate();
+}
+
+async function updateData(id, value) {
+    const index = auditorias.findIndex(a => a.id === id);
+    if (index === -1) return;
+    auditorias[index].data_auditoria = value;
     if (useSheets) await updateInSheets(auditorias[index]);
     if (!useSheets) saveLocal();
     updateLastUpdate();
