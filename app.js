@@ -62,6 +62,7 @@ async function loadFromSheets() {
             descricao: String(row.descricao || ''),
             status: String(row.status || ''),
             responsavel: String(row.responsavel || ''),
+            data_auditoria: String(row.data_auditoria || ''),
             acoes: String(row.acoes || ''),
             comentarios: String(row.comentarios || ''),
             evidencias: String(row.evidencias || '')
@@ -180,7 +181,7 @@ function renderTable(data) {
     if (data.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="7">
+                <td colspan="8">
                     <div class="empty-state">
                         <p>Nenhuma auditoria encontrada</p>
                         <span>Ajuste os filtros ou adicione uma nova auditoria</span>
@@ -206,6 +207,9 @@ function renderTable(data) {
             <td>${escapeHtml(item.descricao)}</td>
             <td contenteditable="true" class="editable-cell" onblur="updateAcoes(${item.id}, this.textContent.trim())">${escapeHtml(item.comentarios || '')}</td>
             <td contenteditable="true" class="editable-cell" onblur="updateField(${item.id}, 'responsavel', this.textContent.trim())">${escapeHtml(item.responsavel || '')}</td>
+            <td>
+                <input type="date" class="inline-input" value="${item.data_auditoria || ''}" onchange="updateField(${item.id}, 'data_auditoria', this.value)">
+            </td>
             <td>
                 <div class="evidence-cell">
                     ${evidenceHtml}
