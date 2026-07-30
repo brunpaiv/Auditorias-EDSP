@@ -62,7 +62,7 @@ async function loadFromSheets() {
             descricao: String(row.descricao || ''),
             status: String(row.status || ''),
             responsavel: String(row['Responsável'] || row.responsavel || ''),
-            data_auditoria: String(row.Data || row.data || row.data_auditoria || ''),
+            data_auditoria: (row.Data || row.data || row.data_auditoria || '').toString().substring(0, 10),
             acoes: String(row.acoes || ''),
             comentarios: String(row.comentarios || ''),
             evidencias: String(row.evidencias || '')
