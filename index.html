@@ -35,6 +35,12 @@
                 </select>
             </div>
             <div class="filter-group">
+                <label for="filter-cidade">Cidade:</label>
+                <select id="filter-cidade">
+                    <option value="">Todas</option>
+                </select>
+            </div>
+            <div class="filter-group">
                 <label for="filter-status">Status:</label>
                 <select id="filter-status">
                     <option value="">Todos</option>
@@ -43,12 +49,21 @@
                 </select>
             </div>
             <div class="filter-group">
+                <label for="filter-date-start">Data (De):</label>
+                <input type="date" id="filter-date-start">
+            </div>
+            <div class="filter-group">
+                <label for="filter-date-end">Data (Até):</label>
+                <input type="date" id="filter-date-end">
+            </div>
+            <div class="filter-group">
                 <label for="filter-search">Buscar:</label>
                 <input type="text" id="filter-search" placeholder="Buscar por descricao...">
             </div>
             <div class="filter-actions">
                 <button id="btn-add" class="btn btn-primary">+ Nova Auditoria</button>
                 <button id="btn-export" class="btn btn-secondary">Exportar CSV</button>
+                <button id="btn-clear-filters" class="btn btn-secondary">Limpar Filtros</button>
             </div>
         </section>
 
@@ -74,11 +89,13 @@
                 <thead>
                     <tr>
                         <th>Node</th>
+                        <th>Cidade</th>
                         <th>Programa</th>
                         <th>Descrição</th>
                         <th>Ações</th>
                         <th>Responsável</th>
                         <th>Data</th>
+                        <th>Comentários</th>
                         <th>Evidências</th>
                         <th>Status</th>
                     </tr>
@@ -101,6 +118,10 @@
                     <div class="form-group">
                         <label for="input-node">Node (Estação)</label>
                         <input type="text" id="input-node" required placeholder="Ex: SBU9">
+                    </div>
+                    <div class="form-group">
+                        <label for="input-cidade">Cidade</label>
+                        <input type="text" id="input-cidade" placeholder="Ex: Sorocaba">
                     </div>
                     <div class="form-group">
                         <label for="input-programa">Programa</label>
@@ -129,8 +150,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="input-comentarios">Comentários</label>
-                    <textarea id="input-comentarios" rows="2" placeholder="Ação tomada ou observação..."></textarea>
+                    <label for="input-comentarios">Ações</label>
+                    <textarea id="input-comentarios" rows="2" placeholder="Ação tomada..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="input-observacoes">Comentários</label>
+                    <textarea id="input-observacoes" rows="2" placeholder="Observações adicionais..."></textarea>
                 </div>
                 <div class="evidence-group">
                     <label>Evidências</label>

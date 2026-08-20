@@ -1,7 +1,7 @@
 // ===== CONFIGURACAO =====
 // IMPORTANTE: Substitua a URL abaixo pela URL do seu Google Apps Script
 // (Veja as instrucoes no arquivo google-apps-script.js)
-const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbyE5-WafNxMRp2wmobUEHeifBBw2BPrHF2lnOn6B0C00rMIP3Aaru88-clwFLfeMQw/exec';
+const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbx7E_nAVO41CyPyhiQzkY8-wmL5u_POrngNASbpxnPYDRluNQuMzC8nsrKOGc079q0/exec';
 
 // ===== DADOS INICIAIS (vazio - dados vem do Google Sheets) =====
 const defaultData = [];
@@ -41,7 +41,7 @@ function showLoading(show) {
     if (show) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="7" style="text-align:center; padding:2rem; color:#888;">
+                <td colspan="10" style="text-align:center; padding:2rem; color:#888;">
                     Carregando dados do Google Sheets...
                 </td>
             </tr>
@@ -55,17 +55,18 @@ async function loadFromSheets() {
         const response = await fetch(SHEETS_API_URL);
         const data = await response.json();
         auditorias = data.map(row => ({
-            id: Number(row.id),
-            node: String(row.node || ''),
-            programa: String(row.programa || ''),
-            item: Number(row.item),
-            descricao: String(row.descricao || ''),
-            status: String(row.status || ''),
+            id: Number(row.ID || row.id),
+            node: String(row.NODE || row.node || ''),
+            programa: String(row.PROGRAMA || row.programa || ''),
+            item: Number(row.ITEM || row.item),
+            descricao: String(row['DESCRIÇÃO'] || row.descricao || ''),
+            status: String(row.Status || row.status || ''),
+            acoes: String(row['Ações'] || row.acoes || ''),
+            evidencias: String(row['Evidências'] || row.evidencias || ''),
+            data_auditoria: (row.Data || row.data || '').toString().substring(0, 10),
             responsavel: String(row['Responsável'] || row.responsavel || ''),
-            data_auditoria: (row.Data || row.data || row.data_auditoria || '').toString().substring(0, 10),
-            acoes: String(row.acoes || ''),
-            comentarios: String(row.comentarios || ''),
-            evidencias: String(row.evidencias || '')
+            cidade: String(row.Cidade || row.cidade || ''),
+            comentarios: String(row['Comentários'] || row.comentarios || '')
         }));
         nextId = Math.max(...auditorias.map(a => a.id), 99) + 1;
     } catch (error) {
@@ -137,10 +138,14 @@ function updateLastUpdate() {
 // ===== EVENT LISTENERS =====
 function setupEventListeners() {
     document.getElementById('filter-node').addEventListener('change', render);
+    document.getElementById('filter-cidade').addEventListener('change', render);
     document.getElementById('filter-status').addEventListener('change', render);
+    document.getElementById('filter-date-start').addEventListener('change', render);
+    document.getElementById('filter-date-end').addEventListener('change', render);
     document.getElementById('filter-search').addEventListener('input', render);
     document.getElementById('btn-add').addEventListener('click', openAddModal);
     document.getElementById('btn-export').addEventListener('click', exportCSV);
+    document.getElementById('btn-clear-filters').addEventListener('click', clearFilters);
     document.getElementById('modal-close').addEventListener('click', closeModal);
     document.getElementById('btn-cancel').addEventListener('click', closeModal);
     document.getElementById('audit-form').addEventListener('submit', handleFormSubmit);
@@ -181,7 +186,7 @@ function renderTable(data) {
     if (data.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="8">
+                <td colspan="10">
                     <div class="empty-state">
                         <p>Nenhuma auditoria encontrada</p>
                         <span>Ajuste os filtros ou adicione uma nova auditoria</span>
@@ -203,11 +208,13 @@ function renderTable(data) {
         return `
         <tr>
             <td><strong>${escapeHtml(item.node)}</strong></td>
+            <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateCidade(${item.id}, this.textContent.trim())">${escapeHtml(item.cidade || '')}</td>
             <td>${escapeHtml(item.programa)}</td>
             <td>${escapeHtml(item.descricao)}</td>
-            <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateAcoes(${item.id}, this.textContent.trim())">${escapeHtml(item.comentarios || '')}</td>
+            <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateAcoes(${item.id}, this.textContent.trim())">${escapeHtml(item.acoes || '')}</td>
             <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateResponsavel(${item.id}, this.textContent.trim())">${escapeHtml(item.responsavel || '')}</td>
             <td contenteditable="true" spellcheck="false" class="editable-cell ${getDateColor(item.data_auditoria)}" onblur="updateDataColor(this, ${item.id}, this.textContent.trim())">${escapeHtml(item.data_auditoria || '')}</td>
+            <td contenteditable="true" spellcheck="false" class="editable-cell" onblur="updateComentarios(${item.id}, this.textContent.trim())">${escapeHtml(item.comentarios || '')}</td>
             <td>
                 <div class="evidence-cell">
                     ${evidenceHtml}
@@ -341,8 +348,35 @@ async function updateField(id, field, value) {
 async function updateAcoes(id, value) {
     const index = auditorias.findIndex(a => a.id === id);
     if (index === -1) return;
+    auditorias[index].acoes = value;
+    if (useSheets) {
+        var url = SHEETS_API_URL + '?action=updateCampo&id=' + id + '&campo=acoes&valor=' + encodeURIComponent(value);
+        fetch(url, { mode: 'no-cors' });
+    }
+    if (!useSheets) saveLocal();
+    updateLastUpdate();
+}
+
+async function updateCidade(id, value) {
+    const index = auditorias.findIndex(a => a.id === id);
+    if (index === -1) return;
+    auditorias[index].cidade = value;
+    if (useSheets) {
+        var url = SHEETS_API_URL + '?action=updateCampo&id=' + id + '&campo=cidade&valor=' + encodeURIComponent(value);
+        fetch(url, { mode: 'no-cors' });
+    }
+    if (!useSheets) saveLocal();
+    updateLastUpdate();
+}
+
+async function updateComentarios(id, value) {
+    const index = auditorias.findIndex(a => a.id === id);
+    if (index === -1) return;
     auditorias[index].comentarios = value;
-    if (useSheets) await updateInSheets(auditorias[index]);
+    if (useSheets) {
+        var url = SHEETS_API_URL + '?action=updateCampo&id=' + id + '&campo=comentarios&valor=' + encodeURIComponent(value);
+        fetch(url, { mode: 'no-cors' });
+    }
     if (!useSheets) saveLocal();
     updateLastUpdate();
 }
@@ -352,7 +386,7 @@ async function updateData(id, value) {
     if (index === -1) return;
     auditorias[index].data_auditoria = value;
     if (useSheets) {
-        var url = SHEETS_API_URL + '?action=updateData&id=' + id + '&data_auditoria=' + encodeURIComponent(value);
+        var url = SHEETS_API_URL + '?action=updateCampo&id=' + id + '&campo=data&valor=' + encodeURIComponent(value);
         fetch(url, { mode: 'no-cors' });
     }
     if (!useSheets) saveLocal();
@@ -384,7 +418,7 @@ async function updateResponsavel(id, value) {
     if (index === -1) return;
     auditorias[index].responsavel = value;
     if (useSheets) {
-        var url = SHEETS_API_URL + '?action=updateResponsavel&id=' + id + '&responsavel=' + encodeURIComponent(value);
+        var url = SHEETS_API_URL + '?action=updateCampo&id=' + id + '&campo=responsavel&valor=' + encodeURIComponent(value);
         fetch(url, { mode: 'no-cors' });
     }
     if (!useSheets) saveLocal();
