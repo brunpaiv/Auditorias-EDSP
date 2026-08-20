@@ -165,19 +165,43 @@ function render() {
     renderTable(filtered);
     renderCounters(filtered);
     renderNodeFilter();
+    renderCidadeFilter();
 }
 
 function getFilteredData() {
     const nodeFilter = document.getElementById('filter-node').value;
+    const cidadeFilter = document.getElementById('filter-cidade') ? document.getElementById('filter-cidade').value : '';
     const statusFilter = document.getElementById('filter-status').value;
+    const dateStart = document.getElementById('filter-date-start') ? document.getElementById('filter-date-start').value : '';
+    const dateEnd = document.getElementById('filter-date-end') ? document.getElementById('filter-date-end').value : '';
     const searchFilter = document.getElementById('filter-search').value.toLowerCase().trim();
 
     return auditorias.filter(item => {
         if (nodeFilter && item.node !== nodeFilter) return false;
+        if (cidadeFilter && item.cidade !== cidadeFilter) return false;
         if (statusFilter && item.status !== statusFilter) return false;
-        if (searchFilter && !item.descricao.toLowerCase().includes(searchFilter) && !item.comentarios.toLowerCase().includes(searchFilter)) return false;
+
+        // Filtro por data (data_auditoria no formato YYYY-MM-DD)
+        const itemData = (item.data_auditoria || '').substring(0, 10);
+        if (dateStart && (!itemData || itemData < dateStart)) return false;
+        if (dateEnd && (!itemData || itemData > dateEnd)) return false;
+
+        if (searchFilter) {
+            const texto = (item.descricao + ' ' + (item.acoes || '') + ' ' + (item.comentarios || '') + ' ' + (item.cidade || '')).toLowerCase();
+            if (!texto.includes(searchFilter)) return false;
+        }
         return true;
     });
+}
+
+function clearFilters() {
+    document.getElementById('filter-node').value = '';
+    if (document.getElementById('filter-cidade')) document.getElementById('filter-cidade').value = '';
+    document.getElementById('filter-status').value = '';
+    if (document.getElementById('filter-date-start')) document.getElementById('filter-date-start').value = '';
+    if (document.getElementById('filter-date-end')) document.getElementById('filter-date-end').value = '';
+    document.getElementById('filter-search').value = '';
+    render();
 }
 
 function renderTable(data) {
@@ -256,6 +280,19 @@ function renderNodeFilter() {
         nodes.map(n => `<option value="${n}" ${n === currentValue ? 'selected' : ''}>${n}</option>`).join('');
 }
 
+function renderCidadeFilter() {
+    const select = document.getElementById('filter-cidade');
+    if (!select) return;
+    const currentValue = select.value;
+    const cidades = [...new Set(auditorias.map(a => a.cidade).filter(c => c && c.trim()))].sort();
+
+    const existingOptions = Array.from(select.options).map(o => o.value).filter(v => v);
+    if (JSON.stringify(cidades) === JSON.stringify(existingOptions)) return;
+
+    select.innerHTML = '<option value="">Todas</option>' +
+        cidades.map(c => `<option value="${c}" ${c === currentValue ? 'selected' : ''}>${c}</option>`).join('');
+}
+
 // ===== MODAL =====
 function openAddModal() {
     editingId = null;
@@ -277,8 +314,10 @@ function openEditModal(item) {
     document.getElementById('input-item').value = item.item;
     document.getElementById('input-descricao').value = item.descricao;
     document.getElementById('input-status').value = item.status;
+    document.getElementById('input-cidade').value = item.cidade || '';
     document.getElementById('input-responsavel').value = item.responsavel || '';
-    document.getElementById('input-comentarios').value = item.comentarios || '';
+    document.getElementById('input-comentarios').value = item.acoes || '';
+    document.getElementById('input-observacoes').value = item.comentarios || '';
     renderEvidenceList();
     document.getElementById('modal').classList.remove('hidden');
     document.getElementById('input-node').focus();
@@ -295,12 +334,15 @@ async function handleFormSubmit(e) {
 
     const formData = {
         node: document.getElementById('input-node').value.trim().toUpperCase(),
+        cidade: document.getElementById('input-cidade').value.trim(),
         programa: document.getElementById('input-programa').value.trim(),
         item: parseInt(document.getElementById('input-item').value),
         descricao: document.getElementById('input-descricao').value.trim(),
         status: document.getElementById('input-status').value,
         responsavel: document.getElementById('input-responsavel').value.trim(),
-        comentarios: document.getElementById('input-comentarios').value.trim(),
+        acoes: document.getElementById('input-comentarios').value.trim(),
+        comentarios: document.getElementById('input-observacoes').value.trim(),
+        data_auditoria: ''
     };
 
     if (editingId !== null) {
@@ -330,9 +372,11 @@ async function setStatus(id, newStatus) {
     const index = auditorias.findIndex(a => a.id === id);
     if (index === -1) return;
     auditorias[index].status = newStatus;
-    if (useSheets) await updateInSheets(auditorias[index]);
+    if (useSheets) {
+        var url = SHEETS_API_URL + '?action=updateCampo&id=' + id + '&campo=status&valor=' + encodeURIComponent(newStatus);
+        fetch(url, { mode: 'no-cors' });
+    }
     if (!useSheets) saveLocal();
-    render();
     updateLastUpdate();
 }
 
@@ -406,7 +450,7 @@ function updateDataColor(cell, id, value) {
     
     // Salvar
     if (useSheets) {
-        var url = SHEETS_API_URL + '?action=updateData&id=' + id + '&data_auditoria=' + encodeURIComponent(value);
+        var url = SHEETS_API_URL + '?action=updateCampo&id=' + id + '&campo=data&valor=' + encodeURIComponent(value);
         fetch(url, { mode: 'no-cors' });
     }
     if (!useSheets) saveLocal();
