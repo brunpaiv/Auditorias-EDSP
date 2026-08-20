@@ -263,17 +263,22 @@ table {
     table-layout: fixed;
 }
 
-/* Larguras das colunas */
-th:nth-child(1) { width: 7%; }
+/* Larguras das colunas (10 colunas) */
+/* 1=Node 2=Cidade 3=Programa 4=Descricao 5=Acoes 6=Responsavel 7=Data 8=Comentarios 9=Evidencias 10=Status */
+th:nth-child(1) { width: 6%; }
 th:nth-child(2) { width: 8%; }
-th:nth-child(3) { width: 28%; }
-th:nth-child(4) { width: 15%; text-align: center; }
-th:nth-child(5) { width: 10%; }
-th:nth-child(6) { width: 10%; }
-th:nth-child(7) { width: 8%; }
-th:nth-child(8) { width: 14%; }
+th:nth-child(3) { width: 7%; }
+th:nth-child(4) { width: 20%; }
+th:nth-child(5) { width: 15%; }
+th:nth-child(6) { width: 9%; }
+th:nth-child(7) { width: 9%; }
+th:nth-child(8) { width: 13%; }
+th:nth-child(9) { width: 7%; }
+th:nth-child(10) { width: 6%; }
 
-td:nth-child(4) { text-align: center; }
+td:nth-child(5) { text-align: center; }
+td:nth-child(6) { text-align: center; }
+td:nth-child(7) { text-align: center; }
 
 thead {
     background: #232f3e;
