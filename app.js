@@ -65,8 +65,8 @@ async function loadFromSheets() {
             evidencias: String(row['Evidências'] || row.evidencias || ''),
             data_auditoria: (row.Data || row.data || '').toString().substring(0, 10),
             responsavel: String(row['Responsável'] || row.responsavel || ''),
-            cidade: String(row.Cidade || row.cidade || ''),
-            comentarios: String(row['Comentários'] || row.comentarios || '')
+            cidade: String(row['Cidade '] || row.Cidade || row.cidade || ''),
+            comentarios: String(row['Comentários'] || row['Comentários '] || row.comentarios || '')
         }));
         nextId = Math.max(...auditorias.map(a => a.id), 99) + 1;
     } catch (error) {
@@ -136,23 +136,31 @@ function updateLastUpdate() {
 }
 
 // ===== EVENT LISTENERS =====
-function setupEventListeners() {
-    document.getElementById('filter-node').addEventListener('change', render);
-    document.getElementById('filter-cidade').addEventListener('change', render);
-    document.getElementById('filter-status').addEventListener('change', render);
-    document.getElementById('filter-date-start').addEventListener('change', render);
-    document.getElementById('filter-date-end').addEventListener('change', render);
-    document.getElementById('filter-search').addEventListener('input', render);
-    document.getElementById('btn-add').addEventListener('click', openAddModal);
-    document.getElementById('btn-export').addEventListener('click', exportCSV);
-    document.getElementById('btn-clear-filters').addEventListener('click', clearFilters);
-    document.getElementById('modal-close').addEventListener('click', closeModal);
-    document.getElementById('btn-cancel').addEventListener('click', closeModal);
-    document.getElementById('audit-form').addEventListener('submit', handleFormSubmit);
+function on(id, event, handler) {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener(event, handler);
+}
 
-    document.getElementById('modal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('modal')) closeModal();
-    });
+function setupEventListeners() {
+    on('filter-node', 'change', render);
+    on('filter-cidade', 'change', render);
+    on('filter-status', 'change', render);
+    on('filter-date-start', 'change', render);
+    on('filter-date-end', 'change', render);
+    on('filter-search', 'input', render);
+    on('btn-add', 'click', openAddModal);
+    on('btn-export', 'click', exportCSV);
+    on('btn-clear-filters', 'click', clearFilters);
+    on('modal-close', 'click', closeModal);
+    on('btn-cancel', 'click', closeModal);
+    on('audit-form', 'submit', handleFormSubmit);
+
+    const modal = document.getElementById('modal');
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+    }
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeModal();
