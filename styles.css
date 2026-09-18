@@ -280,6 +280,29 @@ td:nth-child(5) { text-align: center; }
 td:nth-child(6) { text-align: center; }
 td:nth-child(7) { text-align: center; }
 
+/* Filtros por coluna */
+.col-filter-row th {
+    background: #37475a;
+    padding: 0.35rem 0.4rem;
+}
+
+.col-filter {
+    width: 100%;
+    padding: 0.3rem 0.4rem;
+    border: 1px solid #4a5a70;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    background: #fff;
+    color: #333;
+    box-sizing: border-box;
+}
+
+.col-filter:focus {
+    outline: none;
+    border-color: #ff9900;
+    box-shadow: 0 0 0 2px rgba(255,153,0,0.2);
+}
+
 thead {
     background: #232f3e;
     color: white;

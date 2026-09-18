@@ -155,6 +155,10 @@ function setupEventListeners() {
     on('btn-cancel', 'click', closeModal);
     on('audit-form', 'submit', handleFormSubmit);
 
+    // Filtros por coluna
+    ['colf-node','colf-cidade','colf-programa','colf-descricao','colf-acoes','colf-responsavel','colf-data','colf-comentarios'].forEach(id => on(id, 'input', render));
+    on('colf-status', 'change', render);
+
     const modal = document.getElementById('modal');
     if (modal) {
         modal.addEventListener('click', (e) => {
@@ -176,7 +180,13 @@ function render() {
     renderCidadeFilter();
 }
 
+function val(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.toLowerCase().trim() : '';
+}
+
 function getFilteredData() {
+    // Filtros do topo
     const nodeFilter = document.getElementById('filter-node').value;
     const cidadeFilter = document.getElementById('filter-cidade') ? document.getElementById('filter-cidade').value : '';
     const statusFilter = document.getElementById('filter-status').value;
@@ -184,12 +194,25 @@ function getFilteredData() {
     const dateEnd = document.getElementById('filter-date-end') ? document.getElementById('filter-date-end').value : '';
     const searchFilter = document.getElementById('filter-search').value.toLowerCase().trim();
 
+    // Filtros por coluna
+    const cf = {
+        node: val('colf-node'),
+        cidade: val('colf-cidade'),
+        programa: val('colf-programa'),
+        descricao: val('colf-descricao'),
+        acoes: val('colf-acoes'),
+        responsavel: val('colf-responsavel'),
+        data: val('colf-data'),
+        comentarios: val('colf-comentarios'),
+        status: document.getElementById('colf-status') ? document.getElementById('colf-status').value : ''
+    };
+
     return auditorias.filter(item => {
+        // Filtros do topo
         if (nodeFilter && item.node !== nodeFilter) return false;
         if (cidadeFilter && item.cidade !== cidadeFilter) return false;
         if (statusFilter && item.status !== statusFilter) return false;
 
-        // Filtro por data (data_auditoria no formato YYYY-MM-DD)
         const itemData = (item.data_auditoria || '').substring(0, 10);
         if (dateStart && (!itemData || itemData < dateStart)) return false;
         if (dateEnd && (!itemData || itemData > dateEnd)) return false;
@@ -198,6 +221,18 @@ function getFilteredData() {
             const texto = (item.descricao + ' ' + (item.acoes || '') + ' ' + (item.comentarios || '') + ' ' + (item.cidade || '')).toLowerCase();
             if (!texto.includes(searchFilter)) return false;
         }
+
+        // Filtros por coluna (busca parcial)
+        if (cf.node && !(item.node || '').toLowerCase().includes(cf.node)) return false;
+        if (cf.cidade && !(item.cidade || '').toLowerCase().includes(cf.cidade)) return false;
+        if (cf.programa && !(item.programa || '').toLowerCase().includes(cf.programa)) return false;
+        if (cf.descricao && !(item.descricao || '').toLowerCase().includes(cf.descricao)) return false;
+        if (cf.acoes && !(item.acoes || '').toLowerCase().includes(cf.acoes)) return false;
+        if (cf.responsavel && !(item.responsavel || '').toLowerCase().includes(cf.responsavel)) return false;
+        if (cf.data && !(item.data_auditoria || '').toLowerCase().includes(cf.data)) return false;
+        if (cf.comentarios && !(item.comentarios || '').toLowerCase().includes(cf.comentarios)) return false;
+        if (cf.status && item.status !== cf.status) return false;
+
         return true;
     });
 }
@@ -209,6 +244,13 @@ function clearFilters() {
     if (document.getElementById('filter-date-start')) document.getElementById('filter-date-start').value = '';
     if (document.getElementById('filter-date-end')) document.getElementById('filter-date-end').value = '';
     document.getElementById('filter-search').value = '';
+
+    // Limpar filtros por coluna
+    ['colf-node','colf-cidade','colf-programa','colf-descricao','colf-acoes','colf-responsavel','colf-data','colf-comentarios','colf-status'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+
     render();
 }
 
